@@ -1,0 +1,42 @@
+baseurl: "https://michaelscollier.com/"
+title: "Michael S. Collier's Blog"
+theme: "ghostwriter"
+copyright: "Michael S. Collier"
+disqusShortname: "mcollier-blog"
+languageCode: "en-us"
+googleAnalytics: "UA-156433646-1"
+
+params:
+    mainSection:
+        - post
+    intro: true
+    headline: "Michael S. Collier"
+    description: "Michael's personal blog. It's mine . . . all mine!"
+    github: "https://github.com/mcollier"
+    twitter: "https://twitter.com/michaelcollier"
+    opengraph: true
+    shareTwitter: true
+    shareFacebook: true
+    shareGooglePlus: true
+    shareLinkedIn: true
+    readingTime: true
+    readingTimeText: "Estimated reading time:"
+    dateFormat: "Mon, Jan 2, 2006"
+
+permalinks:
+    post: "/:filename/"
+
+markup:
+  highlight:
+    codefences: true
+    lineNos: true
+    style: github
+    
+menu:
+    main:
+        - name: Blog
+          url: /
+          weight: 1
+        - name: About
+          url: /page/about
+          weight: 2
