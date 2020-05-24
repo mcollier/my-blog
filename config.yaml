@@ -30,7 +30,7 @@ markup:
   highlight:
     codefences: true
     lineNos: true
-    style: github
+    style: vs
 
 menu:
   main:
