@@ -15,6 +15,31 @@ I recently wrote a blog post about how to use Azure Functions to interact with A
 
 ## Let's get started
 
+Setting up an inbound private endpoint for an Azure Function requires the following Azure resources:
+
+- A virtual network
+- An Azure Functions Premium plan
+- An Azure DNS Zone (optional)
+- An Azure VM (optional)
+
+## Azure Virtual Network
+
+A private endpoint gets its IP address from a virtual network.  So, the first Azure resource we'll need to create is a virtual network.  
+
+> I'm not going to go into a lot of details on creating a virtual network in this post.  If you'd like to learn more, please refer to the [official documentation](https://docs.microsoft.com/azure/virtual-network/quick-create-portal).
+
+The virtual network will need at least one subnet.  The subnet will be from where the private endpoint obtains its IP address.  In this post I'm going to create an Azure VM from which I'll connect to the private endpoint of the Azure Function.  I'll connect to the VM using the Azure Bastion service.  Azure Bastion requires a subnet named "AzureBastionSubnet".  While creating the virtual network, I'll create two subnets: "default" and "AzureBastionSubnet".
+
+![Azure Virtual Network with two subnets]()
+
+## Azure Functions Premium plan
+
+## Azure DNS Zone
+
+## Azure Virtual Machine
+
+### Azure Bastion
+
 ## Resources
 
 - [Azure Private Link FAQ](https://docs.microsoft.com/azure/private-link/private-link-faq)
