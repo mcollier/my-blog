@@ -22,23 +22,55 @@ Setting up an inbound private endpoint for an Azure Function requires the follow
 - An Azure DNS Zone (optional)
 - An Azure VM (optional)
 
+## Resource Group
+
+The first thing I'm going to do is create a new resource group.  All resources for this demo will be placed within the resource group.  This makes it easy for me to delete everything when I'm done.
+
 ## Azure Virtual Network
 
 A private endpoint gets its IP address from a virtual network.  So, the first Azure resource we'll need to create is a virtual network.  
 
 > I'm not going to go into a lot of details on creating a virtual network in this post.  If you'd like to learn more, please refer to the [official documentation](https://docs.microsoft.com/azure/virtual-network/quick-create-portal).
 
-The virtual network will need at least one subnet.  The subnet will be from where the private endpoint obtains its IP address.  In this post I'm going to create an Azure VM from which I'll connect to the private endpoint of the Azure Function.  I'll connect to the VM using the Azure Bastion service.  Azure Bastion requires a subnet named "AzureBastionSubnet".  While creating the virtual network, I'll create two subnets: "default" and "AzureBastionSubnet".
+The virtual network will need at least one subnet.  The subnet will be from where the private endpoint obtains its IP address.  Later in this post I'm going to create an Azure VM from which I'll connect to the private endpoint of the Azure Function.  I'll connect to the VM using the [Azure Bastion](https://azure.microsoft.com/services/azure-bastion/) service.  
 
-![Azure Virtual Network with two subnets]()
+During the virtual network creation steps in the Azure Portal, you are prompted to enable the Azure Bastion host.  This creates the necessary subnet (AzureBastionSubnet) and the Azure Bastion service.
 
-## Azure Functions Premium plan
+![Create a virtual network with the Azure Bastion service](../../images/inbound-private-endpoints-with-azure-functions/create-virtual-network-azure-bastion.png)
 
-## Azure DNS Zone
+In the end I'll have a virtual network with default subnet, and the Azure Bastion host.
+
+![Azure Virtual Network summary](../../images/inbound-private-endpoints-with-azure-functions/create-virtual-network-summary.png)
 
 ## Azure Virtual Machine
 
-### Azure Bastion
+Next I'm going to create a Azure VM within the newly created virtual network.  I'll use this VM as a way to validate that I'm able to access the function endpoint from within the virtual network.  I'm not going to go into too many details here, as I feel there is already a good tutorial in the [official documentation](https://docs.microsoft.com/azure/virtual-machines/windows/quick-create-portal).
+
+There are a few things I will call out though.
+
+1. Since I'm using Azure Bastion, I don't want any public inbound ports enabled for this VM.
+![No public inbound ports on the VM](../../images/inbound-private-endpoints-with-azure-functions/create-vm-basics.png)
+1. There is no need for Public IP for this VM as connection to the VM will be handled via Azure Bastion.
+![No public IP for the VM](../../images/inbound-private-endpoints-with-azure-functions/create-vm-networking.png)
+1. On the Management section, leaving all the defaults _except_ for enabling auto-shutdown.  It's not strictly required, but I think it's a good practice, especially for dev/test VMs.
+
+## Azure Functions Premium plan
+
+It's time to get to the fun stuff now!  
+
+I'm going to create an Azure Functions Premium plan to host my function app.  The function will be a basic HTTP-triggered function.  This part is pretty straight forward.  Nothing special.  You can find instructions on creating an Azure Functions Premium plan in the [official documentation](https://docs.microsoft.com/azure/azure-functions/functions-premium-plan).
+
+To summarize, my Azure Functions Premium plan is set up as follows:
+
+- Runtime stack is .NET Core 3.1
+- New storage account
+- New premium plan
+- Enabled Application Insights
+
+In the end, my premium plan looks like this:
+![Summary of a new Azure Functions Premium plan](../../images/inbound-private-endpoints-with-azure-functions/create-function-summary.png)
+
+## Azure DNS Zone
 
 ## Resources
 
