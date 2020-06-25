@@ -7,32 +7,33 @@ tags: [azure-functions, networking, virtual-network, azure-bastion, private-endp
 draft: true
 ---
 
-Earlier this year I wrote a post showing how to set up private site access for Azure Functions.  In a nutshell, private site access is setting up a virtual network service endpoint to restrict access to the function to only traffic from the designated virtual network.  Service endpoints are great, but they are not without some drawbacks (public IP address, doesn't work with connections from on-premises resources (i.e. ExpressRoute), limited RBAC features, etc.)
+Earlier this year I wrote a post showing how to set up private site access for Azure Functions.  In a nutshell, private site access is setting up a virtual network service endpoint to restrict access to the function to only traffic from the designated virtual network.  Service endpoints are great, but they are not without some drawbacks (use a public IP address, doesn't work with connections from on-premises resources (i.e. ExpressRoute), limited RBAC features, etc.)
 
-In my opinion, [Azure Private Endpoint](https://docs.microsoft.com/azure/private-link/private-endpoint-overview) offer more granular control of network based access to specific Azure resources.  One of the major advantages of using a private endpoint is IP address associated with the designated resource is a private IP address from the virtual network's address space.  Meaning, if you want to access the Azure Function, you would need to be on the virtual network (e.g. a virtual machine connected to the virtual network, an AKS cluster, etc.) and you would connect via the private IP address, such as 10.1.2.3.  Azure DNS private zones will allow you to continue to use [https://contoso.azurewebsites.net](https://contoso.azurewebsites.net) as the DNS-friendly fully qualified domain name.  More on that later.
+In my opinion, [Azure Private Endpoint](https://docs.microsoft.com/azure/private-link/private-endpoint-overview) offers more granular control of network based access to specific Azure resources.  One of the major advantages of using a private endpoint is the IP address associated with the designated resource is a private IP address from the virtual network's address space.  Meaning, if you want to access the Azure Function, you will need to be on the virtual network (e.g. a virtual machine connected to the virtual network, an AKS cluster, etc.) and you will connect via the private IP address, such as 10.1.2.3.  Azure DNS private zones will allow you to continue to use [https://contoso.azurewebsites.net](https://contoso.azurewebsites.net) as the DNS-friendly fully qualified domain name.  More on that later.
 
-I recently wrote a blog post about how to use Azure Functions to interact with Azure resources via private endpoints.  The blog post demonstrates using private endpoints of an Azure Storage account and CosmosDB (the SQL API).  From an Azure Functions perspective, these are outbound private endpoints - the function is communicating out to the specific resource via the resource's private endpoint.  It didn't show how to set up an _inbound_ private endpoint.  Private endpoint (inbound) support for Azure App Service, and by relation Azure Functions, recently expanded the preview offering to be available in nearly all Azure regions.  It's time to learn about using Azure Functions with inbound private endpoints!
+I recently wrote a [blog post about how to use Azure Functions to interact with Azure resources via private endpoints](../azure-functions-with-private-endpoints).  The blog post demonstrates interacting with private endpoints of an Azure Storage account and CosmosDB (the SQL API).  From an Azure Functions perspective, these are outbound private endpoints - the function is communicating _out_ to the specific resource via the resource's private endpoint.  The post didn't show how to set up an _inbound_ private endpoint.  Private endpoint (inbound) support for Azure App Service, and by relation Azure Functions, recently expanded the preview offering to be available in nearly all Azure regions.  It's time to learn about using Azure Functions with inbound private endpoints!
 
-## Let's get started
+## Getting started
 
 Setting up an inbound private endpoint for an Azure Function requires the following Azure resources:
 
-- A virtual network
+- An Azure Virtual Network
 - An Azure Functions Premium plan
+- A Private Endpoint
 - An Azure DNS Zone (optional)
 - An Azure VM (optional)
 
-## Resource Group
+## Resource group
 
 The first thing I'm going to do is create a new resource group.  All resources for this demo will be placed within the resource group.  This makes it easy for me to delete everything when I'm done.
 
 ## Azure Virtual Network
 
-A private endpoint gets its IP address from a virtual network.  So, the first Azure resource we'll need to create is a virtual network.  
+A private endpoint gets its IP address from a virtual network.  Therefore, the first Azure resource I'll need to create is a virtual network.  
 
-> I'm not going to go into a lot of details on creating a virtual network in this post.  If you'd like to learn more, please refer to the [official documentation](https://docs.microsoft.com/azure/virtual-network/quick-create-portal).
+> I'm not going to go into a lot of details on creating a virtual network in this post.  To learn more, please refer to the [official documentation](https://docs.microsoft.com/azure/virtual-network/quick-create-portal).
 
-The virtual network will need at least one subnet.  The subnet will be from where the private endpoint obtains its IP address.  Later in this post I'm going to create an Azure VM from which I'll connect to the private endpoint of the Azure Function.  I'll connect to the VM using the [Azure Bastion](https://azure.microsoft.com/services/azure-bastion/) service.  
+The virtual network will need at least one subnet.  The private endpoint obtains its IP address from the subnet.  Later in this post I'm going to create an Azure VM from which I'll connect to the private endpoint of the Azure Function.  I'll connect to the VM using the [Azure Bastion](https://azure.microsoft.com/services/azure-bastion/) service.  
 
 During the virtual network creation steps in the Azure Portal, you are prompted to enable the Azure Bastion host.  This creates the necessary subnet (AzureBastionSubnet) and the Azure Bastion service.
 
@@ -52,13 +53,13 @@ There are a few things I will call out though.
 ![No public inbound ports on the VM](../../images/inbound-private-endpoints-with-azure-functions/create-vm-basics.png)
 1. There is no need for a Public IP for this VM as connection to the VM will be handled via Azure Bastion.
 ![No public IP for the VM](../../images/inbound-private-endpoints-with-azure-functions/create-vm-networking.png)
-1. On the Management section, leaving all the defaults _except_ for enabling auto-shutdown.  It's not strictly required, but I think it's a good practice, especially for dev/test VMs.
+1. On the Management section, I'm leaving all the defaults _except_ for enabling auto-shutdown.  It's not strictly required, but I think it's a good practice, especially for dev/test VMs.
 
 ## Azure Functions Premium plan
 
 It's time to get to the fun stuff now!  
 
-I'm going to create an Azure Functions Premium plan to host my function app.  The function will be a basic HTTP-triggered function.  This part is pretty straight forward.  Nothing special.  You can find instructions on creating an Azure Functions Premium plan in the [official documentation](https://docs.microsoft.com/azure/azure-functions/functions-premium-plan).
+I'm going to create an Azure Functions Premium plan to host my function app.  The function will be a basic HTTP-triggered function.  This part is pretty straight forward.  Instructions on creating an Azure Functions Premium plan can be found in the [official documentation](https://docs.microsoft.com/azure/azure-functions/functions-premium-plan).
 
 To summarize, my Azure Functions Premium plan is set up as follows:
 
@@ -78,7 +79,7 @@ Azure Functions can interact with Azure resources which are set up to use a priv
 
 I believe there is currently a bug in the Azure portal's private endpoint create experience.  I would expect to create a private endpoint from the portal, and in doing so, an Azure Private DNS Zone related to <your-function-name>.privatelink.azurewebsites.net is automatically created on my behalf.  Currently, the portal experience is not creating the DNS zone.
 
-Thes [DNS zone](https://docs.microsoft.com/azure/private-link/private-endpoint-dns#azure-services-dns-zone-configuration) is important as it allows me to invoke the function app using the FQDN of https://<your-function-name>.azurewebsites.net, instead of [https://10.1.2.3](https://10.1.2.3).  But fear not, there is a workaround!  Like most workarounds, it isn't ideal, but it works.  I'm going to create a private endpoint and then link it to the Azure Function.  What . . .
+The [DNS zone](https://docs.microsoft.com/azure/private-link/private-endpoint-dns#azure-services-dns-zone-configuration) is important as it allows me to invoke the function app using the FQDN of https://<your-function-name>.azurewebsites.net, instead of [https://10.1.2.3](https://10.1.2.3).  But fear not, there is a workaround!  Like most workarounds, it isn't ideal, but it works.  I'm going to create a private endpoint and then link it to the Azure Function.  What . . .
 
 1. Add a new Private Endpoint resource.
     ![Create a new private endpoint](../../images/inbound-private-endpoints-with-azure-functions/new-private-endpoint-search.png)
