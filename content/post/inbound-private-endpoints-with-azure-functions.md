@@ -50,7 +50,7 @@ There are a few things I will call out though.
 
 1. Since I'm using Azure Bastion, I don't want any public inbound ports enabled for this VM.
 ![No public inbound ports on the VM](../../images/inbound-private-endpoints-with-azure-functions/create-vm-basics.png)
-1. There is no need for Public IP for this VM as connection to the VM will be handled via Azure Bastion.
+1. There is no need for a Public IP for this VM as connection to the VM will be handled via Azure Bastion.
 ![No public IP for the VM](../../images/inbound-private-endpoints-with-azure-functions/create-vm-networking.png)
 1. On the Management section, leaving all the defaults _except_ for enabling auto-shutdown.  It's not strictly required, but I think it's a good practice, especially for dev/test VMs.
 
@@ -88,9 +88,9 @@ Thes [DNS zone](https://docs.microsoft.com/azure/private-link/private-endpoint-d
     ![Select the Azure resource for which to create the private endpoint](../../images/inbound-private-endpoints-with-azure-functions/create-private-endpoint-resource.png)
 1. It is on the _Configuration_ section where I'll set up the networking and DNS integration for the private endpoint.  
 
-Select the desired virtual network and subnet for the private endpoint. Remember, it is from this subnet that the private endpoint's IP address will be allocated.
+    Select the desired virtual network and subnet for the private endpoint. Remember, it is from this subnet that the private endpoint's IP address will be allocated.
 
-I can also choose to integrate with Azure Private DNS Zones. It is not necessary to do so.  It is possible to use my own DNS server, or create DNS records on the necessary VM(s).  I'm lazy, so I'm going to let Azure Private DNS zones handle the DNS magic for me.  Notice that the DNS zone to be created is named _privatelink.azurewebsites.net_.
+    I can also choose to integrate with Azure Private DNS Zones. It is not necessary to do so.  It is possible to use my own DNS server, or create DNS records on the necessary VM(s).  I'm lazy, so I'm going to let Azure Private DNS zones handle the DNS magic for me.  Notice that the DNS zone to be created is named _privatelink.azurewebsites.net_.
     ![Set up the network and DNS for the private endpoint](../../images/inbound-private-endpoints-with-azure-functions/create-private-endpoint-configuration.png)
 
 1. This is how I've configured my private endpoint configuration.  The next step is to select **Create** and let the magic happen!
@@ -112,9 +112,11 @@ It'll take a few minutes for the private endpoint (and DNS Zone) to be created. 
 
 ![Resource group with private endpoint](./../images/inbound-private-endpoints-with-azure-functions/resource-group-after-private-endpoint-created.png)
 
+## Write the code
+
 ## Deploy the code
 
-You may recall from my [previous post](2020-01-22-azure-functions-private-site-access) on private site access (using a service endpoint) that each Azure Function includes an advanced tooling site ("Kudu") at [https://<your-function-name>.scm.azurewebsites.net>](https://<your-function-name>.scm.azurewebsites.net).  When using private site access / service endpoints, it is optional to apply the service endpoint to the Kudo site.  The option is gone when using a private endpoint - both the main site and the Kudu/SCM site are both private!
+You may recall from my [previous post](../azure-functions-private-site-access) on private site access (using a service endpoint) that each Azure Function includes an advanced tooling site ("Kudu") at [https://<your-function-name>.scm.azurewebsites.net>](https://<your-function-name>.scm.azurewebsites.net).  When using private site access / service endpoints, it is optional to apply the service endpoint to the Kudo site.  The option is gone when using a private endpoint - both the main site and the Kudu/SCM site are both private!
 
 In order to deploy code to the (now private) function, it is necessary to create an agent within the virtual network.  In this case, the "agent" is a VM which is within the virtual network and thus capable of reaching the Kudu/SCM endpoint in order to deploy the code.
 
