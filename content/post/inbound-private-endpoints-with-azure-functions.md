@@ -211,7 +211,6 @@ However, when I access function from the VM, there is much rejoicing!!
 
 ## Summary
 
-
 ## Resources
 
 - [Azure Private Link FAQ](https://docs.microsoft.com/azure/private-link/private-link-faq)
