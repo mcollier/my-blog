@@ -7,7 +7,7 @@ tags: [azure-functions, networking, virtual-network, azure-bastion, private-endp
 draft: true
 ---
 
-Earlier this year I wrote a [post showing how to set up private site access for Azure Functions](../azure-functions-private-site-access).  To briefly recap, private site access refers to setting up a virtual network service endpoint to restrict HTTP-based access to the function to be only traffic from the designated virtual network (i.e. inbound HTTP requests).  Attempts to access the public endpoint [e.g., https://contoso.azurewebsites.net](https://contoso.azurewebsites.net) result in an HTTP 403 Forbidden message.  Service endpoints are great, but they are not without some drawbacks (use a public IP address, doesn't work with connections from on-premises resources (i.e. ExpressRoute), limited RBAC features, etc.)
+Earlier this year I wrote a [post showing how to set up private site access for Azure Functions](../azure-functions-private-site-access).  To briefly recap, private site access refers to setting up a virtual network service endpoint to restrict HTTP-based access to the function to be only traffic from the designated virtual network (i.e. inbound HTTP requests).  Attempts to access the public endpoint (e.g., [https://contoso.azurewebsites.net](https://contoso.azurewebsites.net)) result in an HTTP 403 Forbidden message.  Service endpoints are great, but they are not without some drawbacks (use a public IP address, doesn't work with connections from on-premises resources (i.e. ExpressRoute), limited RBAC features, etc.)
 
 [Azure Private Endpoint](https://docs.microsoft.com/azure/private-link/private-endpoint-overview) offers more granular control of network-based access to specific Azure resources.  One of the major advantages of using a private endpoint is the IP address a private IP address from the virtual network's address space.  Meaning, if you want to access the Azure Function, you will need to be on the virtual network (e.g. a virtual machine connected to the virtual network, an AKS cluster, etc.) and you will connect via the private IP address, such as 10.1.2.3.  Azure DNS private zones will allow you to continue to use [https://contoso.azurewebsites.net](https://contoso.azurewebsites.net) as the DNS-friendly fully qualified domain name.  More on that later.
 
@@ -31,11 +31,11 @@ The first thing I'm going to do is create a new resource group.  All resources f
 
 A private endpoint gets its IP address from a virtual network.  Therefore, the first Azure resource I'll need to create is a virtual network.  
 
-> I'm not going to go into a lot of details on creating a virtual network in this post.  To learn more, please refer to the [official documentation](https://docs.microsoft.com/azure/virtual-network/quick-create-portal).
+> I'm not going to go into a lot of details on creating a virtual network in this post.  As can be seen in the screenshot below, I created a /16 space, which gives me more than 65,000 addresses, which is more than enough for this work. To learn more, please refer to the [official documentation](https://docs.microsoft.com/azure/virtual-network/quick-create-portal).
 
 The virtual network will need at least one subnet.  The private endpoint obtains its IP address from the subnet.  The same subnet can be used for the VM, and also for supplying an IP address for the private endpoint.  Later in this post I’m going to create an Azure VM.  The VM will be used to connect to the private endpoint of the Azure Function, as well as serve as a private build agent from which the code will be deployed (more on that later).  I'll connect to the VM using the [Azure Bastion](https://azure.microsoft.com/services/azure-bastion/) service.  
 
-During the virtual network creation steps in the Azure Portal, you are prompted to enable the Azure Bastion host.  This creates the necessary subnet (AzureBastionSubnet) and the Azure Bastion service.
+During the virtual network creation steps in the Azure Portal, I'm prompted to enable the Azure Bastion host.  This creates the necessary subnet (AzureBastionSubnet) and the Azure Bastion service.
 
 ![Create a virtual network with the Azure Bastion service](../../images/inbound-private-endpoints-with-azure-functions/create-virtual-network-azure-bastion.png)
 
@@ -45,9 +45,9 @@ In the end I'll have a virtual network with default subnet, and the Azure Bastio
 
 ## Azure Virtual Machine
 
-Next, I'm going to create an Azure VM within the newly created virtual network.  I'll use this VM as a way to validate that I'm able to access the function endpoint from within the virtual network.  
+Next, I'm going to create an Azure VM within the newly created virtual network.  I'll use this VM as a way to validate that I'm able to access the function endpoint from within the virtual network and also as a self-hosted build agent.  
 
-> I'm not going to go into too many details here, as I feel there is already a good tutorial in the [official documentation](https://docs.microsoft.com/azure/virtual-machines/windows/quick-create-portal).
+> I'm not going to go into too many details on VM creation here, as I feel there is already a good tutorial in the [official documentation](https://docs.microsoft.com/azure/virtual-machines/windows/quick-create-portal).
 
 When creating the VM, there are a few things that I'll do which deviate from the tutorial.
 
@@ -81,12 +81,12 @@ As mentioned earlier, [Azure Functions can interact with Azure resources which a
 
 ### Warning - bug ahead
 
-I believe there is currently a bug in the Azure portal's private endpoint create experience.  I would expect to create a private endpoint from the portal, and in doing so, an Azure Private DNS Zone related to your-function-name.privatelink.azurewebsites.net is automatically created on my behalf.  
+There is currently a bug in the Azure portal’s private endpoint create experience for Azure Web Apps. Azure Web App private endpoints (of which Azure Functions leverages) is currently in public preview, and thus there may be a few bugs, like this one. As the feature gets closer to General Availability, I expect this bug to get fixed.
 
 Once this bug is resolved, I expect to create a private endpoint from the portal, and in doing so, an Azure Private DNS Zone related to your-function-name.privatelink.azurewebsites.net is automatically created on my behalf.  Creating a private endpoint is a matter of selecting  **Networking** under the _Settings_ section of the function.  On the _Networking_ page there is a link to **Configure your private endpoint connections** under the _Private Endpoint connections_ section.
 ![Configuring a private endpoint](../../images/inbound-private-endpoints-with-azure-functions/azure-function-select-configure-private-endpoint.png)
 
-From there I could add the private endpoint.  And that mostly works.  The problem is the DNS zone isn't created.  I don't believe it is possible to create a DNS zone myself that can handle requests for *.azurewebsites.net (as Microsoft owns the azurewebsites.net domain).
+From there I can add the private endpoint.  And that mostly works.  The problem is the DNS zone isn't created.  It is not possible for me to create a DNS zone that can handle requests for *.azurewebsites.net (as Microsoft owns the azurewebsites.net domain).
 ![Create a private endpoint](../../images/inbound-private-endpoints-with-azure-functions/create-private-endpoint.png)
 
 ### The Workaround
@@ -121,7 +121,7 @@ For the purposes of this post, a basic Azure Function is created by following th
 
 ## Deploy the code
 
-You may recall from my [previous post](../azure-functions-private-site-access) on private site access (using a service endpoint) that each Azure Function includes an advanced tooling site ("Kudu") at [https://your-function-name.scm.azurewebsites.net](https://<your-function-name>.scm.azurewebsites.net).  When using private site access / service endpoints, it is optional to apply the service endpoint to the Kudo site.  The option is gone when using a private endpoint - both the main site and the Kudu/SCM site are both private!
+You may recall from my [previous post](../azure-functions-private-site-access) on private site access (using a service endpoint) that each Azure Function includes an advanced tooling and management site ("Kudu") at [https://your-function-name.scm.azurewebsites.net](https://<your-function-name>.scm.azurewebsites.net).  When using private site access / service endpoints, it is optional to apply the service endpoint to the Kudo site.  The option is gone when using a private endpoint - both the main site and the Kudu/SCM site are both private!
 
 In order to deploy code to the (now private) function, it is necessary to create an agent within the virtual network.  In this case, the "agent" is a VM which is within the virtual network and thus capable of reaching the Kudu/SCM endpoint in order to deploy the code.
 
@@ -235,7 +235,7 @@ Aliases:  my-private-function.azurewebsites.net
 
 Inbound private endpoints with Azure Functions provide a private IP address for accessing a function.  Anything that needs to access the function must be on the virtual network, and access the function using the function's private IP address (or have DNS set up to route to the private address instead of the public address).  Setting up the private endpoint helps keep the function secure (from a network access perspective) by keeping inbound traffic within the virtual network.
 
-It is possible to use private endpoints for both inbound and outbound connections.  I could have an HTTP-triggered function, which has a private endpoint, that writes out to Cosmos DB or Service Bus via an outbound private endpoint.  I could also set up Azure Storage to have a private endpoint, and use that for the function's AzureWebJobStorage setting. Doing so would enable me to _almost_ completely restrict access to the function and dependent resources.  The lone outstanding piece is the Azure Storage account used for the function's web content file share.  That storage account, currently, must not have any virtual network restrictions. That's getting fixed soon though!!!
+It is possible to use private endpoints for both inbound and outbound connections.  I could have an HTTP-triggered function, which has a private endpoint, that writes out to Cosmos DB or Service Bus via an outbound private endpoint.  I could also set up Azure Storage to have a private endpoint, and use that for the function's AzureWebJobStorage setting. Doing so would enable me to _almost_ completely restrict access to the function and dependent resources.  The lone outstanding piece is the Azure Storage account used for the function's web content file share (refer to my [earlier post](../azure-functions-with-private-endpoints) for more details).  That storage account, currently, must not have any virtual network restrictions. That's getting fixed soon though!!!
 
 I hope you found this post useful.  Please leave feedback or comments below, or reach out via [Twitter](https://www.twitter.com/michaelcollier).
 
