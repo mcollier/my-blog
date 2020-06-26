@@ -4,7 +4,6 @@ title: "Inbound Private Endpoints With Azure Functions"
 date: 2020-06-22T22:05:19-04:00
 author: "Michael S. Collier"
 tags: [azure-functions, networking, virtual-network, azure-bastion, private-endpoints]
-draft: true
 ---
 
 Earlier this year I wrote a [post showing how to set up private site access for Azure Functions](../azure-functions-private-site-access).  To briefly recap, private site access refers to setting up a virtual network service endpoint to restrict HTTP-based access to the function to be only traffic from the designated virtual network (i.e. inbound HTTP requests).  Attempts to access the public endpoint (e.g., [https://contoso.azurewebsites.net](https://contoso.azurewebsites.net)) result in an HTTP 403 Forbidden message.  [Service endpoints](https://docs.microsoft.com/azure/virtual-network/virtual-network-service-endpoints-overview) are great, but they are not without some drawbacks (use a public IP address, doesn't work with connections from on-premises resources (i.e. ExpressRoute), limited RBAC features, etc.)
