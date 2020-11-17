@@ -1,6 +1,6 @@
 ---
 title: "Azure Functions - Team ASCII Art Wins"
-date: 2020-11-17T08:15:00-05:00
+date: 2020-11-17T08:15:00-04:00
 draft: false
 author: "Michael S. Collier"
 tags: [azure-functions]
