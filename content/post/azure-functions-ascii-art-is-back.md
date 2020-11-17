@@ -1,6 +1,6 @@
 ---
 title: "Azure Functions - Team ASCII Art Wins"
-date: 2020-11-16T12:29:04-05:00
+date: 2020-11-17T08:15:00-05:00
 draft: false
 author: "Michael S. Collier"
 tags: [azure-functions]
@@ -17,7 +17,7 @@ A few months ago one of the greatest scandals to hit Azure Functions erupted . .
 
 In an [effort](https://github.com/Azure/azure-functions-core-tools/issues/1131) to reduce the verbosity of logging output by `func start` in the Azure Functions Core Tools, the decision was made to remove the famed ASCII art.  To be fair, running `func start` did output quite a bit of logs.  The ASCII art version of the Azure Functions logo was just one of those logs.  It just happened to be the most famous of those logs.  The logo was the thing of highly coveted t-shirts!
 
-Thus, starting with Azure Functions Core Tools version [3.0.2881](https://github.com/Azure/azure-functions-core-tools/releases/tag/3.0.2881) in September 2020, the Azure Functions ASCII logo was no longer displayed when executing `func start`.  The logging output is a lot cleaner too . . . a lot less noisy debugging statements.
+Thus, starting with Azure Functions Core Tools version [3.0.2881](https://github.com/Azure/azure-functions-core-tools/releases/tag/3.0.2881) in September 2020, the logging got a lot cleaner.  There are fewer noisy debugging statements when executing `func start`.  The startup _feels_ snappier too.  That's goodness.  However, the Azure Functions ASCII art logo was no more!
 
 _(2020 . . . it just keeps giving)_
 
