@@ -1,9 +1,10 @@
 ---
 title: "Azure Functions - Team ASCII Art Wins"
 date: 2020-11-16T12:29:04-05:00
-draft: true
+draft: false
 author: "Michael S. Collier"
 tags: [azure-functions]
+comments: true
 ---
 
 A few months ago one of the greatest scandals to hit Azure Functions erupted . . . ASCIIartgate!
