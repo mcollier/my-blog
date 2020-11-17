@@ -69,7 +69,7 @@ privacy:
 
 author:
   name: My Name
-  profile: "https://google.com/+XXX"
+  profile: ""
 
 taxonomies:
   tag: tags
@@ -89,8 +89,8 @@ params:
   email: xxx@example.com
   opengraph: true
   shareTwitter: true
+  rss: true
   shareFacebook: true
-  shareGooglePlus: true
   shareLinkedIn: false
   dateFormat: "Mon, Jan 2, 2006"
   exponeaJsUrl: ""
