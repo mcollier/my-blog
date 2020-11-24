@@ -13,7 +13,9 @@ I recently ran into a situation using the Azure Functions default host key where
 
 I needed to create an Azure Function app via an ARM template.  The ARM template should create the Function app resource, and set the necessary application settings.  One of those app settings should be a [Key vault reference](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) to a secret which contains the [default host key](https://docs.microsoft.com/azure/azure-functions/security-concepts#function-access-keys) for the function app.  My function's application code would retrieve that and invoke another function in the app.
 
-It all seems straight-forward enough.  I'm very comfortable with Azure Functions, and feel that I've got a decent grasp on ARM templates.  Famous last words.
+_Also, please see Benjamin Perkin's ["Azure Function keys, keys and more keys, regenerated and synced"](https://www.thebestcsharpprogrammerintheworld.com/2020/11/23/azure-function-keys-keys-and-more-keys-regenerated-and-synced/) blog post for more observations on Azure Function key generation._
+
+It all seems straight-forward enough.  I'm very comfortable with Azure Functions, and feel that I've got a decent grasp on ARM templates. Famous last words.
 
 ## How it started
 
@@ -228,6 +230,8 @@ The downside is that there is now a need to define the application settings _twi
         }
 ```
 
+_You can find the [full ARM template on my GitHub repo](https://github.com/mcollier/azure-functions-host-key/blob/main/azure-deploy.json)._
+
 Application settings are defined as a block.  Meaning, I can't set just the `MyFunctionHostKey`.  All the settings need to defined again.  I end up duplicating the settings, which I don't like.
 
 ## Summary
@@ -236,4 +240,5 @@ I learned the key is to explicitly set the FUNCTIONS_EXTENSION_VERSION to the de
 
 ### Resources
 
-[Sample repo](https://github.com/mcollier/azure-functions-host-key)
+- [Sample repo](https://github.com/mcollier/azure-functions-host-key)
+- [Azure Function keys, keys and more keys, regenerated and synced](https://www.thebestcsharpprogrammerintheworld.com/2020/11/23/azure-function-keys-keys-and-more-keys-regenerated-and-synced/)
