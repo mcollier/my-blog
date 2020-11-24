@@ -3,7 +3,7 @@ title: "The case of the inconsistent Azure Functions host key"
 author: "Michael S. Collier"
 tags: [azure-functions, azure-resource-manager]
 date: 2020-11-20T16:13:53-05:00
-draft: true
+draft: false
 comments: true
 ---
 
