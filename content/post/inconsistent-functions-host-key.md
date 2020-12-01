@@ -6,15 +6,15 @@ date: 2020-12-01T16:01:45-05:00
 comments: true
 ---
 
-I recently ran into a situation using the Azure Functions default host key where I didn't understand the behavior I was observing.  Thanks to the help of some fantastic colleagues, we figured out what was going on.  I understand what is happening now.  I want to share here in hopes that my experience will help others that may run into a similar challenge.
+I recently ran into a situation using the Azure Functions default host key where I did not understand the behavior I was observing.  Thanks to the help of some fantastic colleagues, we figured out what was going on.  I understand what is happening now.  I want to share here in hopes that my experience will help others that may run into a similar challenge.
 
 ## Scenario
 
-I needed to create an Azure Function app via an ARM template.  The ARM template should create the Function app resource, and set the necessary application settings.  One of those app settings should be a [Key vault reference](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) to a secret which contains the [default host key](https://docs.microsoft.com/azure/azure-functions/security-concepts#function-access-keys) for the function app.  My function's application code would retrieve that and invoke another function in the app.
+I needed to create an Azure Function app via an ARM template.  The ARM template should create the Function app resource and set the necessary application settings.  One of those app settings should be a [Key vault reference](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) to a secret which contains the [default host key](https://docs.microsoft.com/azure/azure-functions/security-concepts#function-access-keys) for the function app.  My function's application code would retrieve that and invoke another function in the app.
 
 _Also, please see Benjamin Perkin's ["Azure Function keys, keys and more keys, regenerated and synced"](https://www.thebestcsharpprogrammerintheworld.com/2020/11/23/azure-function-keys-keys-and-more-keys-regenerated-and-synced/) blog post for more observations on Azure Function key generation._
 
-It all seems straight-forward enough.  I'm very comfortable with Azure Functions, and feel that I've got a decent grasp on ARM templates. Famous last words.
+It all seems straight-forward enough.  I'm very comfortable with Azure Functions and feel that I've got a decent grasp on ARM templates. Famous last words.
 
 ## How it started
 
@@ -127,9 +127,9 @@ I had two different host keys!  How is this possible?
 
 The problem is where the [FUNCTIONS_EXTENSION_VERSION](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#functions_extension_version) application setting was set.  By default, Azure Functions apps are set to use the v1 runtime.  The Azure Functions [v1 runtime persists its key in Azure Files](https://github.com/Azure/azure-functions-host/wiki/Changes-to-Key-Management-in-Functions-V2) (see also [this](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#azurewebjobssecretstoragetype)).
 
-When creating the function app via the ARM template, I didn't explicitly set the FUNCTIONS_EXTENSION_VERSION app setting.  Thus, the runtime was set to the v1 runtime.  When retrieving the key in the ARM template (setting to a Key Vault secret), the Azure Functions runtime returned the key from Azure Files (_the v1 key_).
+When creating the function app via the ARM template, I did not explicitly set the FUNCTIONS_EXTENSION_VERSION app setting.  Thus, the runtime was set to the v1 runtime.  When retrieving the key in the ARM template (setting to a Key Vault secret), the Azure Functions runtime returned the key from Azure Files (_the v1 key_).
 
-In my template, another ARM resource block sets the function's application settings, and it is there where the FUNCTIONS_EXTENSION_VERSION  was set to ~3 (the v3 runtime).  By setting the application setting in a separate step, that forced a restart of the function.  Any change to the application settings triggers an application restart.  A consequence of this particular restart was the Azure Functions' runtime changing to v3.
+In my template, another ARM resource block sets the function's application settings, and it is there where the FUNCTIONS_EXTENSION_VERSION was set to ~3 (the v3 runtime).  By setting the application setting in a separate step, that forced a restart of the function.  Any change to the application settings triggers an application restart.  A consequence of this restart was the Azure Functions' runtime changing to v3.
 
 The v3 runtime uses Azure Blob storage for persisting the keys.  Thus, when inspecting at the host key via the Azure portal after the template finished executing, the key returned is the key from Azure Blob storage (_the v3 key_).
 
@@ -147,9 +147,9 @@ The "fix" is to set the FUNCTIONS_EXTENSION_VERSION at the **same time** as the 
 
 If I set the FUNCTIONS_EXTENSION_VERSION to ~3 at app creation time, I get the expected default host key value in Key Vault, and in the portal.  They keys are the same!
 
-It all seems so simple . . . until it's not.
+It all seems so simple . . . until it is not.
 
-The downside is that there is now a need to define the application settings _twice_!  The majority of the application settings, should be set during function creation.  The site resource needs to be [created before the Key Vault resource in order to set the Key Vault's access policy allowing the site access to the Key Vault's secrets](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references#azure-resource-manager-deployment).  Thus, I need to define, again, the app settings in a separate resource block, just like I had originally!  The template's `Microsoft.Web/Sites` resource looks as follows:
+The downside is that there is now a need to define the application settings _twice_!  The majority of the application settings should be set during function creation.  The site resource needs to be [created before the Key Vault resource in order to set the Key Vault's access policy allowing the site access to the Key Vault's secrets](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references#azure-resource-manager-deployment).  Thus, I need to define, again, the app settings in a separate resource block, just like I had originally!  The template's `Microsoft.Web/Sites` resource looks as follows:
 
 ```json
 {
@@ -231,7 +231,7 @@ The downside is that there is now a need to define the application settings _twi
 
 _You can find the [full ARM template on my GitHub repo](https://github.com/mcollier/azure-functions-host-key/blob/main/azure-deploy.json)._
 
-Application settings are defined as a block.  Meaning, I can't set just the `MyFunctionHostKey`.  All the settings need to defined again.  I end up duplicating the settings, which I don't like.
+Application settings are defined as a block.  Meaning, I cannot set just the `MyFunctionHostKey`.  All the settings need to be defined again.  I end up duplicating the settings, which I do not like.
 
 ## Summary
 
