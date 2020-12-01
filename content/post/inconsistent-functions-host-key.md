@@ -129,11 +129,11 @@ The problem is where the [FUNCTIONS_EXTENSION_VERSION](https://docs.microsoft.co
 
 When creating the function app via the ARM template, I did not explicitly set the FUNCTIONS_EXTENSION_VERSION app setting.  Thus, the runtime was set to the v1 runtime.  When retrieving the key in the ARM template (setting to a Key Vault secret), the Azure Functions runtime returned the key from Azure Files (_the v1 key_).
 
-In my template, another ARM resource block sets the function's application settings, and it is there where the FUNCTIONS_EXTENSION_VERSION was set to ~3 (the v3 runtime).  By setting the application setting in a separate step, that forced a restart of the function.  Any change to the application settings triggers an application restart.  A consequence of this restart was the Azure Functions' runtime changing to v3.
+In my template, another ARM resource block set the function's application settings, and it is there where the FUNCTIONS_EXTENSION_VERSION was set to ~3 (the v3 runtime).  By setting the application setting in a separate step, that forced a restart of the function.  Any change to the application settings triggers an application restart.  A consequence of this restart was the Azure Functions' runtime changing to v3.
 
-The v3 runtime uses Azure Blob storage for persisting the keys.  Thus, when inspecting at the host key via the Azure portal after the template finished executing, the key returned is the key from Azure Blob storage (_the v3 key_).
+The v3 runtime uses Azure Blob storage for persisting the keys.  Thus, when inspecting at the host key via the Azure portal after the template finished executing, the key returned was the key from Azure Blob storage (_the v3 key_).
 
-To summarize, the Key Vault secret value was set, and _then_ the function app restarted.  Meaning, the default host key that was retrieved and set in the Key Vault secret was a v1 key, not a v3 key.  The process sequence was as follows:
+To summarize, the Key Vault secret value was set, and _then_ the function app restarted.  Meaning, the default host key that was retrieved and set in the Key Vault secret was a v1 key, not a v3 key.  The sequence was as follows:
 
 1. Create a function app with the default runtime (~1).
 1. Retrieve the function's default host key and set as a Key Vault secret.
