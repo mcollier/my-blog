@@ -1,9 +1,8 @@
 ---
-title: "How to change the Azure Functions system keys"
+title: "Change the Azure Functions system keys"
 author: "Michael S. Collier"
 tags: [azure-functions]
-date: 2020-12-08T10:15:27-05:00
-draft: true
+date: 2020-12-11T14:10:00-05:00
 comments: true
 ---
 
@@ -14,6 +13,8 @@ It's possible to change these keys via the Azure portal.  There is a button in t
 ![Azure portal to generate new function keys](/images/azure-functions-system-key-change/portal-renew-key-value-with-arrows.png)
 
 What if you want to change the keys programmatically?  I couldn't find official documentation which stated how to do so.  After a bit of splunking through GitHub issues ([here](https://github.com/Azure/azure-functions-host/issues/4728), [here](https://github.com/Azure/azure-functions-host/issues/3994#issuecomment-472108298)) and reading [Mark Heath's excellent blog post on Azure Function keys](https://markheath.net/post/managing-azure-functions-keys-2), I think I found an approach that, so far, seems to work.
+
+> If there is official doc and I missed it, please let me know in the comments below.
 
 Before changing the keys, I'd like to retrieve the current keys.  If I can retrieve the keys through an API, I feel that is a good indication that I should be able to update the keys.
 
@@ -102,6 +103,8 @@ I had Application Insights hooked up to my function app so I could monitor what 
 ![Azure portal Live Metrics](/images/azure-functions-system-key-change/portal-ai-live-metrics-key-changed-small.png)
 
 ## Conclusion
+
+It is possible to view and change the Azure Functions system keys via a REST API.  Oh, and the `az rest` command in the Azure CLI is fantastic!
 
 ## Resources
 
