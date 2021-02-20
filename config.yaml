@@ -5,6 +5,8 @@ copyright: "Michael S. Collier"
 disqusShortname: "mcollier-blog"
 languageCode: "en-us"
 googleAnalytics: "UA-156433646-1"
+enableEmoji: true
+enableGitInfo: true
 
 params:
   mainSection:
