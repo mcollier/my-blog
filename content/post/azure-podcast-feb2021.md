@@ -1,8 +1,8 @@
 ---
 title: "Azure Podcast Interview"
 author: "Michael S. Collier"
-date: 2021-02-20T10:34:01-05:00
-draft: true
+date: 2021-02-22T10:34:01-05:00
+publishDate: 2021-02-22T08:30:00-05:00
 comments: true
 ---
 
