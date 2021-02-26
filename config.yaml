@@ -21,6 +21,9 @@ params:
   readingTime: true
   readingTimeText: "Estimated reading time:"
   dateFormat: "Mon, Jan 2, 2006"
+  style:
+    vars:
+      highlightColor: "#0078D4"
   sidebar:
     home: "right"
     list: "left"
