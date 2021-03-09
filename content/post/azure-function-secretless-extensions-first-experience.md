@@ -1,7 +1,7 @@
 ---
 title: "Azure Function Secretless Extensions - First Experience"
 author: "Michael S. Collier"
-date: 2021-03-10T09:00:00-05:00
+date: 2021-03-08T09:00:00-05:00
 draft: false
 comments: true
 ---
