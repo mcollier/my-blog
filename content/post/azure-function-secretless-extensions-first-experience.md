@@ -9,8 +9,7 @@ comments: true
 I recently started experimenting with the beta versions of the new Azure Storage and Event Hub extensions for Azure Functions.  The new extensions use the [new Azure SDK](https://aka.ms/azsdk), and as a result, include support for using Azure AD to authenticate to specific Azure resources (a.k.a., [managed identities](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)).  I'm a fan of having fewer secrets to manage.  Less secrets . . . more better.  :wink:
 
 This intent of this blog post is to share my initial experiences with the extensions.  It's still early, and thus I expect a few bumps in along the way.
-<!-- {{< giphy aMh59aKR8vjdC >}} -->
-![](https://media.giphy.com/media/aMh59aKR8vjdC/giphy.gif)
+![Jerry Seinfeld - Giddy Up](https://media.giphy.com/media/aMh59aKR8vjdC/giphy.gif)
 
 ## Getting Started
 
@@ -28,37 +27,17 @@ I know I'm going to eventually deploy this function to Azure.  Thus, I'll create
 
 While creating the Azure Function app, I'm also going to create an Application Insights instance.  I like Application Insights available with my Azure Functions.  The [Live Metrics and Logs](https://docs.microsoft.com/azure/azure-functions/functions-monitoring) are incredibly helpful in figuring out what may be going wrong.
 
-<!-- and/or an [Event Hub namespace and event hub](https://docs.microsoft.com/azure/event-hubs/event-hubs-create), depending on which resources your Azure Function will use.  You'll also want to [create an Azure Functions Premium plan](https://docs.microsoft.com/azure/azure-functions/functions-premium-plan?tabs=portal#create-a-premium-plan) (an App Service plan should also work). Since the function will connect to Azure Storage or Event Hubs using an identity-based connection, the Azure Function will need to be [set up with a managed identity](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet). -->
-<!-- 
-### Create a function
-
-For the purposes of this post, I'm going to create a few functions which interact with Azure Storage and Event Hubs.
-
-- An Azure Storage queue triggered function
-- An Azure Storage blob triggered function which uses an Azure Storage queue output binding
-- An Event Hub triggered function
-- An HTTP-triggered function using an Azure Storage blob output binding
-
-These functions will not do much more than react to the trigger event and output data.  I'm going to use the default templates from Visual Studio code, making modifications as needed to work with new types from the new Azure SDK.
-
-You will need to add the new extensions to your project:
-
-```dotnetcli
-dotnet add package Microsoft.Azure.WebJobs.Extensions.Storage --version 5.0.0-beta.2
-dotnet add package Microsoft.Azure.WebJobs.Extensions.EventHubs --version 5.0.0-beta.1
-``` -->
-
 ## My first function using managed identity
 
 As previously mentioned, my first function to use an identity-based connection is an Azure Storage queue-triggered function.  My primary objective is to establish the connection, using an Azure AD identity, to an Azure Storage queue so that the queue trigger executes.  Since I'm starting locally, I want to use my local identity (on my dev laptop).  Once I deploy to Azure, I want the function to use the identity of the function app.
 
-I start by creating an [Azure Storage queue-triggered function](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp). In order to use the new Storage extension, I need to add the new extension to my project.  This upgrades the extension to use the preview version of the v5.x extension.
+I start by creating an [Azure Storage queue-triggered function](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp). In order to use the new Storage extension, I need to add the new extension to my project.  This upgrades the extension to use the beta version of the v5.x extension.
 
 ```dotnetcli
 dotnet add package Microsoft.Azure.WebJobs.Extensions.Storage --version 5.0.0-beta.2
 ```
 
-Additionally, instead of using a `string` or `CloudQueueMessage` as the input type, I change to using the new `QueueMessage` type.  This change is [due to the use of the v5.x extension](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp#usage).  My code now looks like this:
+Additionally, instead of using a `string` or `CloudQueueMessage` as the input type, I change to use the new `QueueMessage` type.  This change is [due to the use of the v5.x extension](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp#usage).  My code now looks like this:
 
 ```csharp
 using Azure.Storage.Queues.Models;
@@ -82,14 +61,15 @@ namespace Company.Function
 
 ```
 
-<!-- {{< giphy QA1mexM96Rdf4ENJcD >}} -->
-![](https://media.giphy.com/media/QA1mexM96Rdf4ENJcD/giphy.gif)
+![SchittsCreek - Not Bad](https://media.giphy.com/media/QA1mexM96Rdf4ENJcD/giphy.gif)
 
 ### Making a connection
 
 With my initial Azure Storage queue-triggered function created locally in Visual Studio Code, I need to set up a connection to my Azure Storage account.  The [documentation](https://docs.microsoft.com/azure/azure-functions/functions-reference#connection-properties) mentions needing to set a "Service URI" property to the URI for the service to which I"m connecting.  I'm not sure what "Service URI" is, or how to set it.  Should there be a `ServiceURI` property on the trigger (like the `Connection` property)?  Should `serviceUri` be part of the app setting value?  It turns out neither.  
 
-I need to set a local setting of name "MyConnectionString__endpoint" and value of the URI for my Azure Storage queue.  My function code set the `QueueTrigger` attribute's `Connection` property to "MyConnectionString".  Thus, my _local.settings.json_ file looks as follows:
+I need to set a local setting of name "MyConnectionString__endpoint" and value of the URI for my Azure Storage queue.  My function code set the `QueueTrigger` attribute's `Connection` property to "MyConnectionString".  The key here is to have the value of the "Connection" property be the prefix of the application setting, with "\__endpoint" being the suffix.  The double underscore (`__`) can be used to [override host.json values](https://docs.microsoft.com/azure/azure-functions/functions-host-json#override-hostjson-values).
+
+Thus, my _local.settings.json_ file looks as follows:
 
 ```json
 {
@@ -107,23 +87,26 @@ I need to set a local setting of name "MyConnectionString__endpoint" and value o
 \
 When starting the function, I notice this unsettling warning message in my console:
 
-```bash
-Warning: Cannot find value named 'MyStorageConnection' in local.settings.json that matches 'connection' property set on 'queueTrigger'
-in 'C:\src\blog-az-func-managed-identity\bin\Debug\netcoreapp3.1\QueueTriggerCSharp1\function.json'.
+```
+Warning: Cannot find value named 'MyStorageConnection' in local.settings.json that matches 'connection' property
+set on 'queueTrigger' in 'C:\Users\mcollier\OneDrive - Microsoft\src\mcollier\blog-az-func-managed-identity\bin\output\QueueTriggerCSharp1\function.json'.
 You can run 'func azure functionapp fetch-app-settings <functionAppName>' or specify a connection string in local.settings.json.
 ```
 
-<!-- ![Azure Function Core Tools - Unable to find matching connection string setting](/images/azure-function-secretless-extensions-first-experience/az-func-no-matching-connection-string-setting.png) -->
 \
-It is true . . . there is no "MyStorageConnection" setting in my _local.settings.json_ file.  This seems to be a false warning message from the tooling.  Presumably because the identity-based connection feature is new, and still preview, the core tools have not yet been updated to handle identity-based connections.
-<!-- {{< giphy KEXly2BwaldSlhY8BL >}} -->
-![](https://media.giphy.com/media/KEXly2BwaldSlhY8BL/giphy.gif)
+![Azure Function Core Tools - Unable to find matching connection string setting](/images/azure-function-secretless-extensions-first-experience/func-core-tools-warning.png)
+\
+\
+It is true . . . there is no "MyStorageConnection" setting in my _local.settings.json_ file.  But there is a "MyStorageConnection__endpoint"! This seems to be a false warning message from the tooling.  Presumably because the identity-based connection feature is new, and still preview, the core tools have not yet been updated to handle identity-based connections.
+\
+\
+![It's Fine. Let's Just Move Past It](https://media.giphy.com/media/KEXly2BwaldSlhY8BL/giphy.gif)
 
 ### Access denied
 
 With that connection string right, the next step is to try to debug my function locally from Visual Studio Code, connecting to my Azure Storage account (not the storage emulator).  I try and get this error:
 
-```bash
+```
 This request is not authorized to perform this operation using this permission.
 RequestId:[REDACTED]
 Time:2021-03-08T22:57:07.9749740Z
@@ -154,6 +137,8 @@ Once my local identity is in the right Azure AD role, and thus has the correct p
 
 ![Local function processing messages from Azure Storage queue](/images/azure-function-secretless-extensions-first-experience/az-func-queue-local.png)
 
+![Macho Man - Oh Yeah](https://media.giphy.com/media/tItIlCGySM0ieKKW6b/giphy.gif)
+
 ### Deploy to Azure
 
 [Publishing my function to Azure is relatively straightforward with Visual Studio Code](https://docs.microsoft.com/azure/azure-functions/create-first-function-vs-code-csharp#5-publish-the-project-to-azure). Like I did for my personal identity, I also need to set the correct permissions for my Azure Function app.  I need to add the function's identity to the Storage Queue Data Contributor role
@@ -163,6 +148,8 @@ Once my local identity is in the right Azure AD role, and thus has the correct p
 I use [Azure Storage Explorer](https://azure.microsoft.com/features/storage-explorer/) to add a few test messages to the Azure Storage queue to make sure the function is picking up the messages.  I can use the Application Insights Logs to see my highly verbose trace statements. :wink:
 
 ![Application Insights log statements](/images/azure-function-secretless-extensions-first-experience/app-insights-log-stroage-queue.png)
+
+![](https://media.giphy.com/media/dIxkmtCuuBQuM9Ux1E/giphy.gif)
 
 ## Event Hubs
 
@@ -221,9 +208,7 @@ public static async Task Run(
 \
 The [GitHub Azure SDK page for the new extension](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs#managed-identity-authentication) also shows me the connection string details.  For Event Hubs, the connection string suffix isn't "endpoint", but instead is "fullyQualifiedNamespace".
 
-<!-- {{< giphy NEvPzZ8bd1V4Y >}} -->
-![](https://media.giphy.com/media/NEvPzZ8bd1V4Y/giphy.gif)
-
+![Guy with beard nodding head](https://media.giphy.com/media/NEvPzZ8bd1V4Y/giphy.gif)
 
 Thus, my _local.settings.json_ now appears as follows:
 
@@ -245,7 +230,7 @@ Thus, my _local.settings.json_ now appears as follows:
 \
 Trying to run the function locally now results in the following error:
 
-```bash
+```
 EventProcessorHost error (Action='Retrieving list of partition identifiers from a Consumer Client.', HostName='[REDACTED]', PartitionId='').
 System.UnauthorizedAccessException: Attempted to perform an unauthorized operation.
 	at Azure.Messaging.EventHubs.AmqpError.ThrowIfErrorResponse(AmqpMessage response, String eventHubName)
@@ -271,8 +256,7 @@ Got it . . . I _again_ don't have the right permissions.  I need to get my local
 
 I can use [Service Bus Explorer](https://github.com/paolosalvatori/ServiceBusExplorer) to add a few events to my newly created Event Hub. Run it again.  No errors!  Ship it!!
 
-<!-- {{< giphy ta83CqOoRwfwQ >}} -->
-![](https://media.giphy.com/media/ta83CqOoRwfwQ/giphy.gif)
+![WreckIt Ralph - I'm Gonna Ship It](https://media.giphy.com/media/ta83CqOoRwfwQ/giphy.gif)
 
 ## Important Considerations
 
@@ -290,17 +274,16 @@ Not all Azure Functions extensions support identity-based connections.  As of th
 
 I'm excited to see how the new extensions develop and to be able to use the extensions, along with managed identity, for Azure Functions triggers and bindings.  Fewer secrets floating is good.  Using identity-based authentication (via managed identity), combined with virtual network-based restrictions such as private endpoints, should provide for two avenues to control access to valuable resources.
 
-As I keep working with Azure Functions and identity-based extensions, I'll keep my samples in my [GitHub repo](https://github.com/mcollier/azure-function-managed-identity-sample).
+So far, I've only experimented with using identity-based connections for Azure Storage queues and Event Hubs.  I have not yet started doing the same with [Azure Storage blobs](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-blob-trigger?tabs=csharp#usage).  They're next.  As I keep working with Azure Functions and identity-based extensions, I'll keep my samples in my [GitHub repo](https://github.com/mcollier/azure-function-managed-identity-sample).
 
-<!-- {{< giphy ziLadIVnOGCKk >}} -->
-
-![](https://media.giphy.com/media/ziLadIVnOGCKk/giphy.gif)
+![Thor - Another](https://media.giphy.com/media/ziLadIVnOGCKk/giphy.gif)
 
 ### References
 
 - [General Azure Functions developer guidance on using managed identity connections](https://docs.microsoft.com/azure/azure-functions/functions-reference#connections)
-- [Azure Web Jobs Storage Queues client library](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/storage/Microsoft.Azure.WebJobs.Extensions.Storage.Queues)
-- [Azure Web Jobs Event Hubs client library](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs)
+- [Azure WebJobs Storage Queues client library](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/storage/Microsoft.Azure.WebJobs.Extensions.Storage.Queues)
+- [Azure WebJobs Storage Blobs client library](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/storage/Microsoft.Azure.WebJobs.Extensions.Storage.Blobs)
+- [Azure WebJobs Event Hubs client library](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs)
 - [Azure Functions Storage Queue Trigger (additional v5.0 info)](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp#additional-types)
 - [Azure RBAC - Built-in Roles](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles)
 - [NuGet Package for Azure Storage Extension](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.Storage/5.0.0-beta.2)

@@ -1,6 +1,6 @@
 baseurl: "/"
 title: "Michael S. Collier's Blog"
-theme: ["mainroad", "hugo-shortcodes"]
+theme: ["mainroad"]
 copyright: "Michael S. Collier"
 disqusShortname: "mcollier-blog"
 languageCode: "en-us"
