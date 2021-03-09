@@ -95,40 +95,42 @@ It is true . . . there is no `MyStorageConnection` setting in my _local.settings
 With that connection string right, the next step is to try to debug my function locally from VS Code, connecting to an Azure Storage account (not the storage emulator).
 
 ```bash
-[2021-03-07T15:43:32.183Z] An unhandled exception has occurred. Host is shutting down.
-[2021-03-07T15:43:32.195Z] Azure.RequestFailedException: This request is not authorized to perform this operation using this permission.
-RequestId:25904295-f003-0055-6368-137a75000000
-Time:2021-03-07T15:43:31.8268526Z
-[2021-03-07T15:43:32.198Z] Status: 403 (This request is not authorized to perform this operation using this permission.)
-[2021-03-07T15:43:32.200Z] ErrorCode: AuthorizationPermissionMismatch
-[2021-03-07T15:43:32.202Z] 
-[2021-03-07T15:43:32.203Z] Content:
-[2021-03-07T15:43:32.205Z] <?xml version="1.0" encoding="utf-8"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.
-RequestId:25904295-f003-0055-6368-137a75000000
-Time:2021-03-07T15:43:31.8268526Z</Message></Error>
-[2021-03-07T15:43:32.211Z] 
-[2021-03-07T15:43:32.212Z] Headers:
-[2021-03-07T15:43:32.214Z] Server: Windows-Azure-Queue/1.0,Microsoft-HTTPAPI/2.0
-[2021-03-07T15:43:32.218Z] x-ms-request-id: 25904295-f003-0055-6368-137a75000000
-[2021-03-07T15:43:32.225Z] x-ms-version: 2018-11-09
-[2021-03-07T15:43:32.228Z] x-ms-error-code: AuthorizationPermissionMismatch
-[2021-03-07T15:43:32.231Z] Date: Sun, 07 Mar 2021 15:43:31 GMT
-[2021-03-07T15:43:32.233Z] Content-Length: 279
-[2021-03-07T15:43:32.235Z] Content-Type: application/xml
-[2021-03-07T15:43:32.242Z] 
-[2021-03-07T15:43:32.243Z]    at Azure.Storage.Queues.QueueRestClient.GetPropertiesAsync(Nullable`1 timeout, CancellationToken cancellationToken)
-[2021-03-07T15:43:32.245Z]    at Azure.Storage.Queues.QueueClient.GetPropertiesInternal(Boolean async, CancellationToken cancellationToken, String operationName)
-[2021-03-07T15:43:32.249Z]    at Azure.Storage.Queues.QueueClient.ExistsInternal(Boolean async, CancellationToken cancellationToken)
-[2021-03-07T15:43:32.253Z]    at Azure.Storage.Queues.QueueClient.ExistsAsync(CancellationToken cancellationToken)
-[2021-03-07T15:43:32.257Z]    at Microsoft.Azure.WebJobs.Extensions.Storage.Common.Listeners.QueueListener.ExecuteAsync(CancellationToken cancellationToken)
-[2021-03-07T15:43:32.259Z]    at Microsoft.Azure.WebJobs.Extensions.Storage.Common.Timers.TaskSeriesTimer.RunAsync(CancellationToken cancellationToken)
+This request is not authorized to perform this operation using this permission.
+RequestId:[REDACTED]
+Time:2021-03-08T22:57:07.9749740Z
+Status: 403 (This request is not authorized to perform this operation using this permission.)
+ErrorCode: AuthorizationPermissionMismatch
+
+Content:
+<?xml version="1.0" encoding="utf-8"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.
+RequestId:[REDACTED]
+Time:2021-03-08T22:57:07.9749740Z</Message></Error>
+
+Headers:
+Server: Windows-Azure-Queue/1.0,Microsoft-HTTPAPI/2.0
+x-ms-request-id: [REDACTED]
+x-ms-version: 2018-11-09
+x-ms-error-code: AuthorizationPermissionMismatch
+Date: Mon, 08 Mar 2021 22:57:07 GMT
+Content-Length: 279
+Content-Type: application/xml
 ```
 
-I can work with that.  I need to set the right permissions for my [local identity](https://docs.microsoft.com/azure/azure-functions/functions-reference#local-development) to work with the Azure Storage queue.  I assumed since I am the Service Administrator of my Azure subscription, that I would already have the right permissions.  Apparently that was an incorrect assumption.
-
-Through a bit of trial and error, I learn that I need to put myself in the [Storage Queue Data Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#storage-queue-data-contributor) role.  I do that [via the Azure portal](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal).
+I can work with that.  I need to set the right permissions for my [local identity](https://docs.microsoft.com/azure/azure-functions/functions-reference#local-development) to work with the Azure Storage queue. Through a bit of trial and error, I learn that I need to put myself in the [Storage Queue Data Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#storage-queue-data-contributor) role.  I do that [via the Azure portal](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal).
 
 ![Azure portal - view assigned Azure Storage RBAC roles](/images/azure-function-secretless-extensions-first-experience/blob-rbac-role-assignment.png)
+
+Once my local identity is in the right Azure AD role, and thus has the correct permissions to work with the Azure Storage queue, my local function is able to process messages!!
+
+### Deploy to Azure
+
+[Publishing my function to Azure is relatively straightforward with Visual Studio Code](https://docs.microsoft.com/azure/azure-functions/create-first-function-vs-code-csharp#5-publish-the-project-to-azure). There are two changes I need to make:
+
+1. Enable managed identity for the function
+![Azure Portal - enable managed identity](/images/azure-function-secretless-extensions-first-experience/azure-portal-enable-func-managed-identity.png)
+1. Add the function's identity to the Storage Queue Data Contributor role
+![Azure Portal - set the function identity to the needed role](/images/azure-function-secretless-extensions-first-experience/azure-portal-enable-func-managed-identity-function-app.png)
+![Azure Portal - set the function identity to the needed role](/images/azure-function-secretless-extensions-first-experience/azure-portal-set-func-managed-id-role-function-app.png)
 
 ## Key Considerations
 
