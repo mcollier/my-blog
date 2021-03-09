@@ -9,7 +9,8 @@ comments: true
 I recently started experimenting with the beta versions of the new Azure Storage and Event Hub extensions for Azure Functions.  The new extensions use the [new Azure SDK](https://aka.ms/azsdk), and as a result, include support for using Azure AD to authenticate to specific Azure resources (a.k.a., [managed identities](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)).  I'm a fan of having fewer secrets to manage.  Less secrets . . . more better.  :wink:
 
 This intent of this blog post is to share my initial experiences with the extensions.  It's still early, and thus I expect a few bumps in along the way.
-{{< giphy aMh59aKR8vjdC >}}
+<!-- {{< giphy aMh59aKR8vjdC >}} -->
+![](https://media.giphy.com/media/aMh59aKR8vjdC/giphy.gif)
 
 ## Getting Started
 
@@ -81,7 +82,8 @@ namespace Company.Function
 
 ```
 
-{{< giphy QA1mexM96Rdf4ENJcD >}}
+<!-- {{< giphy QA1mexM96Rdf4ENJcD >}} -->
+![](https://media.giphy.com/media/QA1mexM96Rdf4ENJcD/giphy.gif)
 
 ### Making a connection
 
@@ -114,7 +116,8 @@ You can run 'func azure functionapp fetch-app-settings <functionAppName>' or spe
 <!-- ![Azure Function Core Tools - Unable to find matching connection string setting](/images/azure-function-secretless-extensions-first-experience/az-func-no-matching-connection-string-setting.png) -->
 \
 It is true . . . there is no "MyStorageConnection" setting in my _local.settings.json_ file.  This seems to be a false warning message from the tooling.  Presumably because the identity-based connection feature is new, and still preview, the core tools have not yet been updated to handle identity-based connections.
-{{< giphy KEXly2BwaldSlhY8BL >}}
+<!-- {{< giphy KEXly2BwaldSlhY8BL >}} -->
+![](https://media.giphy.com/media/KEXly2BwaldSlhY8BL/giphy.gif)
 
 ### Access denied
 
@@ -204,7 +207,8 @@ public static async Task Run(
         }
     }
 
-    // Once processing of the batch is complete, if any messages in the batch failed processing throw an exception so that there is a record of the failure.
+    // Once processing of the batch is complete, if any messages in the batch failed processing
+    // throw an exception so that there is a record of the failure.
 
     if (exceptions.Count > 1)
         throw new AggregateException(exceptions);
@@ -217,7 +221,9 @@ public static async Task Run(
 \
 The [GitHub Azure SDK page for the new extension](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs#managed-identity-authentication) also shows me the connection string details.  For Event Hubs, the connection string suffix isn't "endpoint", but instead is "fullyQualifiedNamespace".
 
-{{< giphy NEvPzZ8bd1V4Y >}}
+<!-- {{< giphy NEvPzZ8bd1V4Y >}} -->
+![](https://media.giphy.com/media/NEvPzZ8bd1V4Y/giphy.gif)
+
 
 Thus, my _local.settings.json_ now appears as follows:
 
@@ -265,7 +271,8 @@ Got it . . . I _again_ don't have the right permissions.  I need to get my local
 
 I can use [Service Bus Explorer](https://github.com/paolosalvatori/ServiceBusExplorer) to add a few events to my newly created Event Hub. Run it again.  No errors!  Ship it!!
 
-{{< giphy ta83CqOoRwfwQ >}}
+<!-- {{< giphy ta83CqOoRwfwQ >}} -->
+![](https://media.giphy.com/media/ta83CqOoRwfwQ/giphy.gif)
 
 ## Important Considerations
 
@@ -285,7 +292,9 @@ I'm excited to see how the new extensions develop and to be able to use the exte
 
 As I keep working with Azure Functions and identity-based extensions, I'll keep my samples in my [GitHub repo](https://github.com/mcollier/azure-function-managed-identity-sample).
 
-{{< giphy ziLadIVnOGCKk >}}
+<!-- {{< giphy ziLadIVnOGCKk >}} -->
+
+![](https://media.giphy.com/media/ziLadIVnOGCKk/giphy.gif)
 
 ### References
 
