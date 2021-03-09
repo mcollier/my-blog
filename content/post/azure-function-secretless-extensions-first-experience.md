@@ -1,14 +1,14 @@
 ---
-title: "Azure Function Secretless Extensions First Experience"
+title: "Azure Function Secretless Extensions - First Experience"
 author: "Michael S. Collier"
 date: 2021-03-06T09:16:51-05:00
 draft: true
 comments: true
 ---
 
-I have recently started experimenting with the beta versions of the new Azure Storage and Event Hub extensions for Azure Functions.  The new extensions use the [new Azure SDK](https://aka.ms/azsdk), and as a result, include support for Azure AD-based authentication.  I'm a fan of having fewer secrets to manage.  Less secrets . . . more better.  ;)
+I recently started experimenting with the beta versions of the new Azure Storage and Event Hub extensions for Azure Functions.  The new extensions use the [new Azure SDK](https://aka.ms/azsdk), and as a result, include support for using Azure AD to authenticate to specific Azure resources (a.k.a., [managed identities](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)).  I'm a fan of having fewer secrets to manage.  Less secrets . . . more better.  :wink:
 
-This intent of this blog post is to share my initial experiences with the extensions.  It's still early, and thus I expect a few bumps in the road.
+This intent of this blog post is to share my initial experiences with the extensions.  It's still early, and thus I expect a few bumps in along the way.
 {{< giphy aMh59aKR8vjdC >}}
 
 ## Getting Started
@@ -19,9 +19,9 @@ I'm going to start by describing how I was able to get a _very simple_ Azure Sto
 
 ### Create the resources
 
-I first need to [create an Azure Storage account](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli).  This storage account will host the queue from which the function will receive messages. I'll use this storage account when provisioning my function app in Azure.
+I first need to [create an Azure Storage account](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli).  This storage account will host the queue from which the function will receive messages. I'll also use this storage account when provisioning my function app in Azure.
 
-I know I'm going to eventually deploy this function to Azure.  Thus, I'll create a new [Azure Functions Premium plan](https://docs.microsoft.com/azure/azure-functions/functions-premium-plan?tabs=portal#create-a-premium-plan) (an App Service plan should also work).  At the time I'm writing this, Azure Function Consumption plans are not yet supported for identity-based connections.  Since the function will connect to Azure Storage using an identity-based connection, the Azure Function will need to be [set up with a managed identity](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet).
+I know I'm going to eventually deploy this function to Azure.  Thus, I'll create a new [Azure Functions Premium plan](https://docs.microsoft.com/azure/azure-functions/functions-premium-plan?tabs=portal#create-a-premium-plan) (an App Service plan should also work, but I haven't tried yet).  At the time I'm writing this, [Azure Function Consumption plans are not yet supported for use with identity-based connections](https://docs.microsoft.com/azure/azure-functions/functions-reference#configure-an-identity-based-connection).  Since the function will connect to Azure Storage using an identity-based connection, the Azure Function will need to be [set up with a managed identity](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet).
 
 ![Azure Portal - enable managed identity](/images/azure-function-secretless-extensions-first-experience/azure-portal-enable-func-managed-identity.png)
 
@@ -51,13 +51,13 @@ dotnet add package Microsoft.Azure.WebJobs.Extensions.EventHubs --version 5.0.0-
 
 As previously mentioned, my first function to use an identity-based connection is an Azure Storage queue-triggered function.  My primary objective is to establish the connection, using an Azure AD identity, to an Azure Storage queue so that the queue trigger executes.  Since I'm starting locally, I want to use my local identity (on my dev laptop).  Once I deploy to Azure, I want the function to use the identity of the function app.
 
-I start by creating an [Azure Storage queue-triggered function](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp). In order to use the new Storage extension, I do need to add the new extension to my project.
+I start by creating an [Azure Storage queue-triggered function](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp). In order to use the new Storage extension, I need to add the new extension to my project.  This upgrades the extension to use the preview version of the v5.x extension.
 
 ```dotnetcli
 dotnet add package Microsoft.Azure.WebJobs.Extensions.Storage --version 5.0.0-beta.2
 ```
 
-Additionally, instead of using a `string` or `CloudQueueMessage` as the input type, I change to using the new `QueueMessage` type.  My code now looks like this:
+Additionally, instead of using a `string` or `CloudQueueMessage` as the input type, I change to using the new `QueueMessage` type.  This change is [due to the use of the v5.x extension](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp#usage).  My code now looks like this:
 
 ```csharp
 using Azure.Storage.Queues.Models;
@@ -70,7 +70,9 @@ namespace Company.Function
     public static class QueueTriggerCSharp1
     {
         [FunctionName("QueueTriggerCSharp1")]
-        public static void Run([QueueTrigger("%QueueName%", Connection = "MyStorageConnection")] QueueMessage myQueueItem, ILogger log)
+        public static void Run(
+          [QueueTrigger("%QueueName%", Connection="MyStorageConnection")] QueueMessage myQueueItem,
+          ILogger log)
         {
             log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
         }
@@ -83,7 +85,7 @@ namespace Company.Function
 
 ### Making a connection
 
-With my initial Azure Storage queue-triggered function created locally in Visual Studio Code, I need to set up a connection to an Azure Storage account.  The [documentation](https://docs.microsoft.com/azure/azure-functions/functions-reference#connection-properties) mentions needing to set a "Service URI" property to the URI for the service to which I"m connecting.  I'm not sure what "Service URI" is, or how to set it.  Should there be a `ServiceURI` property on the trigger (like the `Connection` property)?  Should `serviceUri` be part of the app setting value?  It turns out neither.  
+With my initial Azure Storage queue-triggered function created locally in Visual Studio Code, I need to set up a connection to my Azure Storage account.  The [documentation](https://docs.microsoft.com/azure/azure-functions/functions-reference#connection-properties) mentions needing to set a "Service URI" property to the URI for the service to which I"m connecting.  I'm not sure what "Service URI" is, or how to set it.  Should there be a `ServiceURI` property on the trigger (like the `Connection` property)?  Should `serviceUri` be part of the app setting value?  It turns out neither.  
 
 I need to set a local setting of name "MyConnectionString__endpoint" and value of the URI for my Azure Storage queue.  My function code set the `QueueTrigger` attribute's `Connection` property to "MyConnectionString".  Thus, my _local.settings.json_ file looks as follows:
 
@@ -98,9 +100,9 @@ I need to set a local setting of name "MyConnectionString__endpoint" and value o
     "MyStorageConnection__endpoint": "https://[AZURE-STORAGE-ACCOUNT-NAME].queue.core.windows.net/"
   }
 }
-
 ```
 
+\
 When starting the function, I notice this unsettling warning message in my console:
 
 ```bash
@@ -109,14 +111,14 @@ in 'C:\src\blog-az-func-managed-identity\bin\Debug\netcoreapp3.1\QueueTriggerCSh
 You can run 'func azure functionapp fetch-app-settings <functionAppName>' or specify a connection string in local.settings.json.
 ```
 
-![Azure Function Core Tools - Unable to find matching connection string setting](/images/azure-function-secretless-extensions-first-experience/az-func-no-matching-connection-string-setting.png)
-
-It is true . . . there is no `MyStorageConnection` setting in my _local.settings.json_ file.  This seems to be a false warning message from the tooling.  Presumably because this identity-based connection feature is new, and still preview, the core tools have not yet be updated to handle identity-based connections.
+<!-- ![Azure Function Core Tools - Unable to find matching connection string setting](/images/azure-function-secretless-extensions-first-experience/az-func-no-matching-connection-string-setting.png) -->
+\
+It is true . . . there is no "MyStorageConnection" setting in my _local.settings.json_ file.  This seems to be a false warning message from the tooling.  Presumably because the identity-based connection feature is new, and still preview, the core tools have not yet been updated to handle identity-based connections.
 {{< giphy KEXly2BwaldSlhY8BL >}}
 
 ### Access denied
 
-With that connection string right, the next step is to try to debug my function locally from Visual Studio Code, connecting to an Azure Storage account (not the storage emulator).
+With that connection string right, the next step is to try to debug my function locally from Visual Studio Code, connecting to my Azure Storage account (not the storage emulator).  I try and get this error:
 
 ```bash
 This request is not authorized to perform this operation using this permission.
@@ -140,15 +142,14 @@ Content-Length: 279
 Content-Type: application/xml
 ```
 
-Right . . . I can work with that.  My local identity doesn't have the necessary permissions to work with the designated Azure Storage queue.
-
-I need to set the right permissions for my [local identity](https://docs.microsoft.com/azure/azure-functions/functions-reference#local-development) to work with the Azure Storage queue. Through a bit of trial and error, I learn that I need to put myself in the [Storage Queue Data Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#storage-queue-data-contributor) role.  I do that [via the Azure portal](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal).
+\
+Right . . . I can work with that.  My local identity doesn't have the necessary permissions to work with the designated Azure Storage queue.  I need to set the right permissions for my [local identity](https://docs.microsoft.com/azure/azure-functions/functions-reference#local-development) to work with the Azure Storage queue. Through a bit of trial and error, I learn that I need to put myself in the [Storage Queue Data Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#storage-queue-data-contributor) role.  I do that [via the Azure portal](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal).
 
 ![Azure portal - view assigned Azure Storage RBAC roles](/images/azure-function-secretless-extensions-first-experience/blob-rbac-role-assignment.png)
 
 Once my local identity is in the right Azure AD role, and thus has the correct permissions to work with the Azure Storage queue, my local function is able to process messages!!
 
-![Local function processing messages from Azure Storage queue](/images/azure-function-secretless-extensions-first-experience/app-insights-log-stroage-queue.png)
+![Local function processing messages from Azure Storage queue](/images/azure-function-secretless-extensions-first-experience/az-func-queue-local.png)
 
 ### Deploy to Azure
 
@@ -156,13 +157,13 @@ Once my local identity is in the right Azure AD role, and thus has the correct p
 ![Azure Portal - set the function identity to the needed role](/images/azure-function-secretless-extensions-first-experience/azure-portal-enable-func-managed-identity-function-app.png)
 ![Azure Portal - set the function identity to the needed role](/images/azure-function-secretless-extensions-first-experience/azure-portal-set-func-managed-id-role-function-app.png)
 
-I use Azure Storage Explorer to add a few test messages to the Azure Storage queue to make sure the function is picking up the messages.  I can use the Application Insights Logs to see my highly verbose trace statements.
+I use [Azure Storage Explorer](https://azure.microsoft.com/features/storage-explorer/) to add a few test messages to the Azure Storage queue to make sure the function is picking up the messages.  I can use the Application Insights Logs to see my highly verbose trace statements. :wink:
 
 ![Application Insights log statements](/images/azure-function-secretless-extensions-first-experience/app-insights-log-stroage-queue.png)
 
 ## Event Hubs
 
-Now that I know out how to use an identity-based connection with an Azure Storage queue, I want to try doing the same with Event Hubs.  Before I get started with the code, I'm going to need to [create a new Event Hub namespace and event hub](https://docs.microsoft.com/azure/event-hubs/event-hubs-create).
+Now that I know out how to use an identity-based connection with an Azure Storage queue, I want to try doing the same with Event Hubs.  Before I get started with the code, I'm going to need to [create a new Event Hubs namespace and an event hub](https://docs.microsoft.com/azure/event-hubs/event-hubs-create).
 
 I'm going to start with the default Event Hub-triggered function generated by the Visual Studio Code template.  Like with the Azure Storage extension, I need to update my project to use the new Event Hub extension.
 
@@ -175,11 +176,13 @@ The new Azure SDK uses a few different data types when working with Event Hubs. 
 - Instead of using the `Microsoft.Azure.EventHubs` namespace, use `Azure.Messaging.EventHubs`
 - Instead of `eventData.Body.Array`, use `eventData.EventBody`
 
-My function code now looks like the following:
+No other changes were needed, and thus my sample code looks very similar to that generated by the Visual Studio Code template.
 
 ```csharp
 [FunctionName("EventHubTriggerCSharp1")]
-public static async Task Run([EventHubTrigger("%EventHubName%", Connection = "MyEventHubConnection")] EventData[] events, ILogger log)
+public static async Task Run(
+    [EventHubTrigger("%EventHubName%", Connection = "MyEventHubConnection")] EventData[] events,
+    ILogger log)
 {
     var exceptions = new List<Exception>();
 
@@ -209,15 +212,14 @@ public static async Task Run([EventHubTrigger("%EventHubName%", Connection = "My
     if (exceptions.Count == 1)
         throw exceptions.Single();
 }
-}
 ```
 
 \
-\
-The [GitHub Azure SDK page for the new extension](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs#managed-identity-authentication) also shows me the connection string details.
+The [GitHub Azure SDK page for the new extension](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs#managed-identity-authentication) also shows me the connection string details.  For Event Hubs, the connection string suffix isn't "endpoint", but instead is "fullyQualifiedNamespace".
+
 {{< giphy NEvPzZ8bd1V4Y >}}
 
-Thus, my _local.settings.json_ now looks as follows:
+Thus, my _local.settings.json_ now appears as follows:
 
 ```json
 {
@@ -257,7 +259,7 @@ System.UnauthorizedAccessException: Attempted to perform an unauthorized operati
 EventProcessorHost error (Action='Retrieving list of partition identifiers from a Consumer Client.', HostName='[REDACTED]', PartitionId='').
 ```
 \
-Got it . . . I again don't have the right permissions.  I need to get my local identity into the [Azure Event Hubs Data Receiver](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#azure-event-hubs-data-receiver) role.  While I'm getting myself right, I might as well do the same for my Azure Function.
+Got it . . . I _again_ don't have the right permissions.  I need to get my local identity into the [Azure Event Hubs Data Receiver](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#azure-event-hubs-data-receiver) role.  While I'm getting myself right, I might as well do the same for my Azure Function.
 
 ![Azure Portal- setting RBAC assignment for Event Hub namespace](/images/azure-function-secretless-extensions-first-experience/event-hub-rbac-assignment.png)
 
