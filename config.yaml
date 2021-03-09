@@ -1,6 +1,6 @@
 baseurl: "/"
 title: "Michael S. Collier's Blog"
-theme: "ghostwriter"
+theme: "mainroad"
 copyright: "Michael S. Collier"
 disqusShortname: "mcollier-blog"
 languageCode: "en-us"
@@ -13,9 +13,8 @@ params:
     - post
   intro: true
   headline: "Michael S. Collier"
-  description: "Michael's personal blog. It's mine . . . all mine!"
-  github: "https://github.com/mcollier"
-  twitter: "https://twitter.com/michaelcollier"
+  subtitle: "I blog about Azure, software engineering, and a few other things."
+  readmore: true
   opengraph: true
   shareTwitter: true
   shareFacebook: true
@@ -24,6 +23,24 @@ params:
   readingTime: true
   readingTimeText: "Estimated reading time:"
   dateFormat: "Mon, Jan 2, 2006"
+  style:
+    vars:
+      highlightColor: "#0078D4"
+  sidebar:
+    home: "right"
+    list: "left"
+    single: false
+    widgets:
+      - "recent"
+      - "taglist"
+      - "social"
+  widgets:
+    recent_num: 5
+    tags_counter: true
+    social:
+      twitter: michaelcollier
+      github: mcollier
+      linkedin: mcollier
 
 permalinks:
   post: "/:filename/"
