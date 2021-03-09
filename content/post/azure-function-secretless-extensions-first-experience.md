@@ -61,13 +61,15 @@ namespace Company.Function
 
 ```
 
-![SchittsCreek - Not Bad](https://media.giphy.com/media/QA1mexM96Rdf4ENJcD/giphy.gif)
+<!-- ![SchittsCreek - Not Bad](https://media.giphy.com/media/QA1mexM96Rdf4ENJcD/giphy.gif) -->
 
 ### Making a connection
 
 With my initial Azure Storage queue-triggered function created locally in Visual Studio Code, I need to set up a connection to my Azure Storage account.  The [documentation](https://docs.microsoft.com/azure/azure-functions/functions-reference#connection-properties) mentions needing to set a "Service URI" property to the URI for the service to which I"m connecting.  I'm not sure what "Service URI" is, or how to set it.  Should there be a `ServiceURI` property on the trigger (like the `Connection` property)?  Should `serviceUri` be part of the app setting value?  It turns out neither.  
 
 I need to set a local setting of name "MyConnectionString__endpoint" and value of the URI for my Azure Storage queue.  My function code set the `QueueTrigger` attribute's `Connection` property to "MyConnectionString".  The key here is to have the value of the "Connection" property be the prefix of the application setting, with "\__endpoint" being the suffix.  The double underscore (`__`) can be used to [override host.json values](https://docs.microsoft.com/azure/azure-functions/functions-host-json#override-hostjson-values).
+
+![Cat surprised](https://media.giphy.com/media/Nm8ZPAGOwZUQM/giphy.gif)
 
 Thus, my _local.settings.json_ file looks as follows:
 
@@ -100,7 +102,7 @@ You can run 'func azure functionapp fetch-app-settings <functionAppName>' or spe
 It is true . . . there is no "MyStorageConnection" setting in my _local.settings.json_ file.  But there is a "MyStorageConnection__endpoint"! This seems to be a false warning message from the tooling.  Presumably because the identity-based connection feature is new, and still preview, the core tools have not yet been updated to handle identity-based connections.
 \
 \
-![It's Fine. Let's Just Move Past It](https://media.giphy.com/media/KEXly2BwaldSlhY8BL/giphy.gif)
+![Steve Martin - It's Fine. Let's Just Move Past It](https://media.giphy.com/media/KEXly2BwaldSlhY8BL/giphy.gif)
 
 ### Access denied
 
@@ -142,14 +144,16 @@ Once my local identity is in the right Azure AD role, and thus has the correct p
 ### Deploy to Azure
 
 [Publishing my function to Azure is relatively straightforward with Visual Studio Code](https://docs.microsoft.com/azure/azure-functions/create-first-function-vs-code-csharp#5-publish-the-project-to-azure). Like I did for my personal identity, I also need to set the correct permissions for my Azure Function app.  I need to add the function's identity to the Storage Queue Data Contributor role
-![Azure Portal - set the function identity to the needed role](/images/azure-function-secretless-extensions-first-experience/azure-portal-enable-func-managed-identity-function-app.png)
+<!-- ![Azure Portal - set the function identity to the needed role](/images/azure-function-secretless-extensions-first-experience/azure-portal-enable-func-managed-identity-function-app.png) -->
 ![Azure Portal - set the function identity to the needed role](/images/azure-function-secretless-extensions-first-experience/azure-portal-set-func-managed-id-role-function-app.png)
 
+\
 I use [Azure Storage Explorer](https://azure.microsoft.com/features/storage-explorer/) to add a few test messages to the Azure Storage queue to make sure the function is picking up the messages.  I can use the Application Insights Logs to see my highly verbose trace statements. :wink:
 
+\
 ![Application Insights log statements](/images/azure-function-secretless-extensions-first-experience/app-insights-log-stroage-queue.png)
 
-![](https://media.giphy.com/media/dIxkmtCuuBQuM9Ux1E/giphy.gif)
+![Star Wars - It's Working](https://media.giphy.com/media/dIxkmtCuuBQuM9Ux1E/giphy.gif)
 
 ## Event Hubs
 
