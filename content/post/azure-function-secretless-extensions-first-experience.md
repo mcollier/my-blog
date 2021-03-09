@@ -131,8 +131,18 @@ Content-Type: application/xml
 ```
 
 \
-Right . . . I can work with that.  My local identity doesn't have the necessary permissions to work with the designated Azure Storage queue.  I need to set the right permissions for my [local identity](https://docs.microsoft.com/azure/azure-functions/functions-reference#local-development) to work with the Azure Storage queue. Through a bit of trial and error, I learn that I need to put myself in the [Storage Queue Data Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#storage-queue-data-contributor) role.  I do that [via the Azure portal](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal).
+Right . . . I can work with that.  My local identity doesn't have the necessary permissions to work with the designated Azure Storage queue.  I need to set the right permissions for my [local identity](https://docs.microsoft.com/azure/azure-functions/functions-reference#local-development) to work with the Azure Storage queue. Through a bit of trial and error, I learn that I need to put myself in the [Storage Queue Data Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#storage-queue-data-contributor) role.  I often set that up [via the Azure portal](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal), but I've an Azure CLI example below.
 
+```bash
+#!/bin/bash
+
+assigneeId=$(az ad user list --filter "displayName eq 'Michael Collier'" --query []."objectId" -o tsv)
+roleId=$(az role definition list --name "Storage Queue Data Contributor" --query []."name" -o tsv)
+storageAccountResourceId=$(az storage account show --name blogazfuncmanagedid -g blog-azure-func-managed-identity --query "id" -o tsv)
+az role assignment create --assignee $assigneeId --role $roleId --scope $storageAccountResourceId
+```
+
+\
 ![Azure portal - view assigned Azure Storage RBAC roles](/images/azure-function-secretless-extensions-first-experience/blob-rbac-role-assignment.png)
 
 Once my local identity is in the right Azure AD role, and thus has the correct permissions to work with the Azure Storage queue, my local function is able to process messages!!
