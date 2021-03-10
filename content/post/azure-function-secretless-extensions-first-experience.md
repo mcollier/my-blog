@@ -34,7 +34,7 @@ As previously mentioned, my first function to use an identity-based connection i
 I start by creating an [Azure Storage queue-triggered function](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp). In order to use the new Storage extension, I need to add the new extension to my project.  This upgrades the extension to use the beta version of the v5.x extension.
 
 ```dotnetcli
-dotnet add package Microsoft.Azure.WebJobs.Extensions.Storage --version 5.0.0-beta.2
+dotnet add package Microsoft.Azure.WebJobs.Extensions.Storage --version 5.0.0-beta.3
 ```
 
 Additionally, instead of using a `string` or `CloudQueueMessage` as the input type, I change to use the new `QueueMessage` type.  This change is [due to the use of the v5.x extension](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp#usage).  My code now looks like this:
@@ -65,9 +65,9 @@ namespace Company.Function
 
 ### Making a connection
 
-With my initial Azure Storage queue-triggered function created locally in Visual Studio Code, I need to set up a connection to my Azure Storage account.  The [documentation](https://docs.microsoft.com/azure/azure-functions/functions-reference#connection-properties) mentions needing to set a "Service URI" property to the URI for the service to which I'm connecting.  I'm not sure what "Service URI" is, or how to set it.  Should there be a `ServiceURI` property on the trigger (like the `Connection` property)?  Should `serviceUri` be part of the app setting value?  It turns out neither.  
+<!-- With my initial Azure Storage queue-triggered function created locally in Visual Studio Code, I need to set up a connection to my Azure Storage account.  The [documentation](https://docs.microsoft.com/azure/azure-functions/functions-reference#connection-properties) mentions needing to set a "Service URI" property to the URI for the service to which I'm connecting.  I'm not sure what "Service URI" is, or how to set it.  Should there be a `ServiceURI` property on the trigger (like the `Connection` property)?  Should `serviceUri` be part of the app setting value?  It turns out neither.   -->
 
-I need to set a local setting of name "MyStorageConnection__endpoint" and value of the URI for my Azure Storage queue.  My function code set the `QueueTrigger` attribute's `Connection` property to "MyStorageConnection".  The key here is to have the value of the "Connection" property be the prefix of the application setting, with "\__endpoint" being the suffix.  The double underscore (`__`) can be used to [override host.json values](https://docs.microsoft.com/azure/azure-functions/functions-host-json#override-hostjson-values).
+With my initial Azure Storage queue-triggered function created locally in Visual Studio Code, I need to set up an [identity-based connection](https://docs.microsoft.com/azure/azure-functions/functions-reference#connection-properties) to my Azure Storage account.  I need to set a local setting of name "MyStorageConnection__serviceUri" and value of the URI for my Azure Storage queue.  My function code set the `QueueTrigger` attribute's `Connection` property to "MyStorageConnection".  The key here is to have the value of the "Connection" property be the prefix of the application setting, with "\__serviceUri" being the suffix.  The double underscore (`__`) can be used to [override host.json values](https://docs.microsoft.com/azure/azure-functions/functions-host-json#override-hostjson-values).
 
 ![Cat surprised](https://media.giphy.com/media/Nm8ZPAGOwZUQM/giphy.gif)
 
@@ -81,7 +81,7 @@ Thus, my _local.settings.json_ file looks as follows:
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "QueueName":"[AZURE-STORAGE-QUEUE-NAME]",
-    "MyStorageConnection__endpoint": "https://[AZURE-STORAGE-ACCOUNT-NAME].queue.core.windows.net/"
+    "MyStorageConnection__serviceUri": "https://[AZURE-STORAGE-ACCOUNT-NAME].queue.core.windows.net/"
   }
 }
 ```
@@ -99,7 +99,7 @@ You can run 'func azure functionapp fetch-app-settings <functionAppName>' or spe
 ![Azure Function Core Tools - Unable to find matching connection string setting](/images/azure-function-secretless-extensions-first-experience/func-core-tools-warning.png)
 \
 \
-It is true . . . there is no "MyStorageConnection" setting in my _local.settings.json_ file.  But there is a "MyStorageConnection__endpoint"! This seems to be a false warning message from the tooling.  Presumably because the identity-based connection feature is new, and still preview, the core tools have not yet been updated to handle identity-based connections.
+It is true . . . there is no "MyStorageConnection" setting in my _local.settings.json_ file.  But there is a "MyStorageConnection__serviceUri"! This seems to be a false warning message from the tooling.  Presumably because the identity-based connection feature is new, and still preview, the core tools have not yet been updated to handle identity-based connections.
 \
 \
 ![Steve Martin - It's Fine. Let's Just Move Past It](https://media.giphy.com/media/KEXly2BwaldSlhY8BL/giphy.gif)
@@ -172,7 +172,7 @@ Now that I know out how to use an identity-based connection with an Azure Storag
 I'm going to start with the default Event Hub-triggered function generated by the Visual Studio Code template.  Like with the Azure Storage extension, I need to update my project to use the new Event Hub extension.
 
 ```dotnetcli
-dotnet add package Microsoft.Azure.WebJobs.Extensions.EventHubs --version 5.0.0-beta.1
+dotnet add package Microsoft.Azure.WebJobs.Extensions.EventHubs --version 5.0.0-beta.2
 ```
 
 The new Azure SDK uses a few different data types when working with Event Hubs.  The [sample GitHub code](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs) is very helpful in figuring out the needed changes.  I need to make a few minor changes:
@@ -220,7 +220,7 @@ public static async Task Run(
 ```
 
 \
-The [GitHub Azure SDK page for the new extension](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs#managed-identity-authentication) also shows me the connection string details.  For Event Hubs, the connection string suffix isn't "endpoint", but instead is "fullyQualifiedNamespace".
+The [GitHub Azure SDK page for the new extension](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs#managed-identity-authentication) also shows me the connection string details.  For Event Hubs, the connection string suffix isn't "serviceUri", but instead is "fullyQualifiedNamespace".
 
 ![Guy with beard nodding head](https://media.giphy.com/media/NEvPzZ8bd1V4Y/giphy.gif)
 
@@ -234,7 +234,7 @@ Thus, my _local.settings.json_ now appears as follows:
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "QueueName": "[AZURE-STORAGE-QUEUE-NAME]",
-    "MyStorageConnection__endpoint": "https://[AZURE-STORAGE-ACCOUNT-NAME].queue.core.windows.net/",
+    "MyStorageConnection__serviceUri": "https://[AZURE-STORAGE-ACCOUNT-NAME].queue.core.windows.net/",
     "EventHubName":"[EVENT-HUB-NAME]",
     "MyEventHubConnection__fullyQualifiedNamespace":"[EVENT-HUB-NAMESPACE].servicebus.windows.net"
   }
@@ -282,7 +282,7 @@ Identity-based connections are new, and thus there is not yet full support acros
 
 ### Not all extensions . . . yet
 
-Not all Azure Functions extensions support identity-based connections.  As of this writing, support is limited to [Azure Storage (blobs and queues)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.Storage/5.0.0-beta.2) and [Event Hubs](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.EventHubs/5.0.0-beta.1).  I assume Service Bus will be coming soon, as Service Bus is in the same (generally speaking) family of messaging/eventing services.
+Not all Azure Functions extensions support identity-based connections.  As of this writing, support is limited to [Azure Storage (blobs and queues)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.Storage/5.0.0-beta.2) and [Event Hubs](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.EventHubs/5.0.0-beta.2).  I assume Service Bus will be coming soon, as Service Bus is in the same (generally speaking) family of messaging/eventing services.
 
 ## Conclusion
 
@@ -301,5 +301,5 @@ So far, I've only experimented with using identity-based connections for Azure S
 - [Azure Functions Storage Queue Trigger (additional v5.0 info)](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp#additional-types)
 - [Azure RBAC - Built-in Roles](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles)
 - [NuGet Package for Azure Storage Extension](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.Storage/5.0.0-beta.2)
-- [NuGet Package for Azure Event Hub Extension](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.EventHubs/5.0.0-beta.1)
+- [NuGet Package for Azure Event Hub Extension](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.EventHubs/5.0.0-beta.2)
 - [Sample on using managed identity from within an Azure Function (via Azure SDK, not the extension)](https://docs.microsoft.com/samples/azure-samples/functions-storage-managed-identity/using-managed-identity-between-azure-functions-and-azure-storage/)
