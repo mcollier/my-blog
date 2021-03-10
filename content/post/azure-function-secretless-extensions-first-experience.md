@@ -131,7 +131,7 @@ Content-Type: application/xml
 ```
 
 \
-Right . . . I can work with that.  My local identity doesn't have the necessary permissions to work with the designated Azure Storage queue.  I need to set the right permissions for my [local identity](https://docs.microsoft.com/azure/azure-functions/functions-reference#local-development) to work with the Azure Storage queue. Through a bit of trial and error, I learn that I need to put myself in the [Storage Queue Data Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#storage-queue-data-contributor) role.  I often set that up [via the Azure portal](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal), but I've an Azure CLI example below.
+Right . . . I can work with that.  My local identity doesn't have the necessary permissions to work with the designated Azure Storage queue.  I need to set the right permissions for my [local identity](https://docs.microsoft.com/azure/azure-functions/functions-reference#local-development) to work with the Azure Storage queue. Through a bit of trial and error, I learn that I need to put myself in the [Storage Queue Data Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#storage-queue-data-contributor) role.  I often set that up [via the Azure portal](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal), but I've included an Azure CLI example below.
 
 ```bash
 #!/bin/bash
