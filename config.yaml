@@ -1,6 +1,6 @@
 baseurl: "/"
 title: "Michael S. Collier's Blog"
-theme: "mainroad"
+theme: ["mainroad"]
 copyright: "Michael S. Collier"
 disqusShortname: "mcollier-blog"
 languageCode: "en-us"
@@ -14,6 +14,8 @@ params:
   intro: true
   headline: "Michael S. Collier"
   subtitle: "I blog about Azure, software engineering, and a few other things."
+  copyright: "Michael S. Collier"
+  post_meta: ["author", "date", "categories", "translations"]
   readmore: true
   opengraph: true
   shareTwitter: true
@@ -21,6 +23,7 @@ params:
   shareGooglePlus: true
   shareLinkedIn: true
   readingTime: true
+  pager: true
   readingTimeText: "Estimated reading time:"
   dateFormat: "Mon, Jan 2, 2006"
   style:
