@@ -2,7 +2,7 @@
 title: "Azure Function Secretless Extensions - First Experience"
 author: "Michael S. Collier"
 tags: [azure-functions, azure-sdk, identity]
-date: 2021-03-08T09:00:00-05:00
+date: 2021-03-15T09:00:00-05:00
 draft: false
 comments: true
 ---
@@ -38,7 +38,7 @@ I start by creating an [Azure Storage queue-triggered function](https://docs.mic
 dotnet add package Microsoft.Azure.WebJobs.Extensions.Storage --version 5.0.0-beta.3
 ```
 
-Additionally, instead of using a `string` or `CloudQueueMessage` as the input type, I change to use the new `QueueMessage` type.  This change is [due to the use of the v5.x extension](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp#usage).  My code now looks like this:
+Additionally, instead of using a `CloudQueueMessage` as the input type, I change to use the new `QueueMessage` type.  This change is [due to the use of the v5.x extension](https://docs.microsoft.com/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=csharp#usage).  My code now looks like this:
 
 ```csharp
 using Azure.Storage.Queues.Models;
