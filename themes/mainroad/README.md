@@ -3,7 +3,7 @@
 **Mainroad** is a responsive, simple, clean and content-focused [Hugo](https://gohugo.io/) theme based on the
 [MH Magazine lite](https://wordpress.org/themes/mh-magazine-lite/) WordPress theme.
 
-**[Demo (Fast update)](https://mainroad-demo.netlify.app/)** | [Standart Demo](https://themes.gohugo.io/theme/mainroad/)
+**[Demo](https://mainroad-demo.netlify.app/)**
 
 ![screenshot](https://raw.githubusercontent.com/Vimux/Mainroad/master/images/screenshot.png)
 
@@ -67,7 +67,6 @@ googleAnalytics = "" # Enable Google Analytics by entering your tracking id
   avatar = "img/avatar.png"
 
 [Params]
-  subtitle = "" # Deprecated in favor of .Site.Params.logo.subtitle
   description = "John Doe's Personal blog about everything" # Site description. Used in meta description
   copyright = "John Doe" # Footer copyright holder, otherwise will use site title
   opengraph = true # Enable OpenGraph if true
@@ -84,9 +83,12 @@ googleAnalytics = "" # Enable Google Analytics by entering your tracking id
   mathjaxPath = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js" # Specify MathJax path
   mathjaxConfig = "TeX-AMS-MML_HTMLorMML" # Specify MathJax config
   googleFontsLink = "https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700" # Load Google Fonts
-  highlightColor = "" # Deprecated in favor of .Site.Params.style.vars.highlightColor
   customCSS = ["css/custom.css"] # Include custom CSS files
   customJS = ["js/custom.js"] # Include custom JS files
+
+  # DEPRECATED PARAMS
+  subtitle = "" # Deprecated in favor of .Site.Params.logo.subtitle
+  highlightColor = "" # Deprecated in favor of .Site.Params.style.vars.highlightColor
 
 [Params.style.vars]
   highlightColor = "#e22d30" # Override highlight color
@@ -101,6 +103,9 @@ googleAnalytics = "" # Enable Google Analytics by entering your tracking id
   title = "Mainroad" # Logo title, otherwise will use site title
   subtitle = "Just another site" # Logo subtitle
 
+[Params.thumbnail]
+  visibility = ["list", "post"] # Control thumbnail visibility
+
 [Params.sidebar]
   home = "right" # Configure layout for home page
   list = "left"  # Configure layout for list pages
@@ -112,6 +117,7 @@ googleAnalytics = "" # Enable Google Analytics by entering your tracking id
 
 [Params.widgets]
   recent_num = 5 # Set the number of articles in the "Recent articles" widget
+  categories_counter = false # Enable counter for each category in "Categories" widget
   tags_counter = false # Enable counter for each tag in "Tags" widget
 
 [Params.widgets.social]
@@ -134,7 +140,7 @@ googleAnalytics = "" # Enable Google Analytics by entering your tracking id
 
 [[Params.widgets.social.custom]]
   title = "My Home Page"
-  url = "http://example.com"
+  url = "https://example.com"
 ```
 
 A good idea is not to copy all these settings without understanding how it works. Use only those parameters that you
@@ -160,7 +166,7 @@ tags:
 menu: main # Optional, add page to a menu. Options: main, side, footer
 
 # Theme-Defined params
-thumbnail: "img/placeholder.jpg" # Thumbnail image
+thumbnail: "img/placeholder.png" # Thumbnail image
 lead: "Example lead - highlighted near the title" # Lead text
 comments: false # Enable Disqus comments for specific page
 authorbox: true # Enable authorbox for specific page
@@ -193,6 +199,28 @@ options in your site config:
 Please be noted that the logo image will display at a maximum width of 128 pixels and a maximum height of 128 pixels
 when you use text and image simultaneously. When the only logo image is active, it will display at a maximum height of
 256 pixels. Ideally, your image should be SVG.
+
+### Thumbnail visibility
+
+By default, a thumbnail image has shown for a list and single pages simultaneously. In some cases, you may want to show
+a thumbnail for list-like pages only and hide it on single pages (or vice versa). Control global thumbnail visibility
+via config.
+
+```toml
+[Params.thumbnail]
+  visibility = ["list"]
+```
+
+Besides global configuration, you can change thumbnail visibility individually with extended thumbnail notation via
+front matter.
+
+```yaml
+thumbnail:
+  src: "img/placeholder.png"
+  visibility:
+    - list
+    - post
+```
 
 ### Sidebar
 
