@@ -86,7 +86,7 @@ az ad sp create-for-rbac \
     --scope "$SCOPE"
 ```
 
-The `az ad sp create-for-rbac` command will display output similar to the snippet below.  I need to sure to save the ‘appId’, ‘password’, and ‘tenant’ returned from the command.  I’ll need that data to get an access token used to authenticate against the SCM REST API.
+The `az ad sp create-for-rbac` command will display output similar to the snippet below.  I need to be sure to save the ‘appId’, ‘password’, and ‘tenant’ returned from the command.  I’ll need that data to get an access token used to authenticate against the SCM REST API.
 
 ```text
 {
@@ -128,7 +128,7 @@ az login --service-principal \
 TOKEN=$(az account get-access-token -o tsv --query accessToken)
 ```
 
-I now a valid AAD authentication token, and a zip file containing my function app.  The next step is to execute an HTTP POST request against the _/zipdeploy_ endpoint of the SCM REST API.  I’ll put the AAD token in the Authorization header.
+I now have a valid AAD authentication token, and a zip file containing my function app.  The next step is to execute an HTTP POST request against the _/zipdeploy_ endpoint of the SCM REST API.  I’ll put the AAD token in the Authorization header.
 
 ```bash
 curl -X POST \
@@ -139,7 +139,7 @@ curl -X POST \
 
 You can find the full code deployment script in [my GitHub repo](https://github.com/mcollier/azure-functions-zip-deploy-aad/blob/main/scripts/deploy-code.sh).
 
-That’s it!  It’ll take a few seconds for the deployment to complete.  I can go to the Azure Portal and see my newly deployed function.
+That’s it!  It’ll take a few seconds for the deployment to complete.  I can go to the Azure portal and see my newly deployed function.
 
 ![Azure Function with deployed function](../../images/azure-functions-zip-deploy-aad-auth/deployed-azure-function.png)
 
