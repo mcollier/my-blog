@@ -18,6 +18,8 @@ I reached out to a colleague who helped figure out that, yes, it is possible to 
 
 Let’s go through the steps.
 
+> Jump to my [GitHub repo](https://github.com/mcollier/azure-functions-zip-deploy-aad) get started quickly!
+
 ## Create an Azure Function
 
 I’m going to use [Azure Bicep](https://docs.microsoft.com/azure/azure-resource-manager/bicep/) to create an Azure Function (Consumption) app, the required Azure Storage dependency, and Application Insights.  You can find the full Bicep files in my [GitHub repo](https://github.com/mcollier/azure-functions-zip-deploy-aad/blob/main/iac/main.bicep).  The only “special” thing about my setup is that I’ve [disabled basic authentication for the SCM site, and disabled FTP publishing](https://docs.microsoft.com/azure/app-service/deploy-configure-credentials?tabs=cli#disable-basic-authentication).
@@ -88,11 +90,11 @@ The `az ad sp create-for-rbac` command will display output similar to the snippe
 
 ```text
 {
-  "appId": "0eb3904c-34af-42c1-86ca-0791b65c28b7",
+  "appId": "123456aa-aaaa-bbbb-cccc-0123456789123",
   "displayName": "azfuncdeploy-sp",
-  "name": "0eb3904c-34af-42c1-86ca-0791b65c28b7",
-  "password": "EeybGj_FuRMJ4mvhesSUC_F-ngfJYG9xK5",
-  "tenant": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+  "name": "123456aa-aaaa-bbbb-cccc-0123456789123",
+  "password": "xxyyxxyyxxyyxyxyxyxyxx",
+  "tenant": "123456789-1234-abcd-vxyz-012345678901"
 }
 ```
 
