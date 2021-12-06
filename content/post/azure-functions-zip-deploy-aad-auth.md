@@ -10,9 +10,9 @@ comments: true
 
 I was recently faced with a scenario where I needed a script to deploy an Azure Function.  Specifically, there was a desire to use a REST API to deploy a .zip file of the Function app.
 
-The documentation for [“Deploy ZIP file with REST APIs”](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#rest) indicates this is possible via a HTTP POST request to <https://{APP-NAME}.scm.azurewebsites.net/api/zipdeploy>.  One challenge with the current documentation is the stated need to use HTTP BASIC authentication.  Needing to use BASIC authentication is a problem if BASIC authentication is disabled.
+The documentation for [“Deploy ZIP file with REST APIs”](https://docs.microsoft.com/azure/azure-functions/deployment-zip-push#rest) indicates this is possible via a HTTP POST request to <https://{APP-NAME}.scm.azurewebsites.net/api/zipdeploy>.  One challenge with the current documentation is the stated need to use HTTP BASIC authentication.  Needing to use BASIC authentication is a problem if BASIC authentication is disabled.
 
-As stated in the [documentation](https://docs.microsoft.com/en-us/azure/app-service/deploy-configure-credentials?tabs=cli#disable-access-to-the-api), the SCM REST API is backed by Azure RBAC.  I couldn’t find any reference on how to use the SCM REST API to perform a zip deployment. Does the _/zipdeploy_ endpoint work with AAD-based authentication?
+As stated in the [documentation](https://docs.microsoft.com/azure/app-service/deploy-configure-credentials?tabs=cli#disable-access-to-the-api), the SCM REST API is backed by Azure RBAC.  I couldn’t find any reference on how to use the SCM REST API to perform a zip deployment. Does the _/zipdeploy_ endpoint work with AAD-based authentication?
 
 I reached out to a colleague who helped figure out that, yes, it is possible to use the _/zipdeploy_ SCM REST API with AAD-based authentication!
 
@@ -20,7 +20,7 @@ Let’s go through the steps.
 
 ## Create an Azure Function
 
-I’m going to use [Azure Bicep](https://docs.microsoft.com/EN-US/azure/azure-resource-manager/bicep/) to create an Azure Function (Consumption) app, the required Azure Storage dependency, and Application Insights.  You can find the full Bicep files in my [GitHub repo](https://github.com/mcollier/azure-functions-zip-deploy-aad/blob/main/iac/main.bicep).  The only “special” thing about my setup is that I’ve [disabled basic authentication for the SCM site, and disabled FTP publishing](https://docs.microsoft.com/en-us/azure/app-service/deploy-configure-credentials?tabs=cli#disable-basic-authentication).
+I’m going to use [Azure Bicep](https://docs.microsoft.com/azure/azure-resource-manager/bicep/) to create an Azure Function (Consumption) app, the required Azure Storage dependency, and Application Insights.  You can find the full Bicep files in my [GitHub repo](https://github.com/mcollier/azure-functions-zip-deploy-aad/blob/main/iac/main.bicep).  The only “special” thing about my setup is that I’ve [disabled basic authentication for the SCM site, and disabled FTP publishing](https://docs.microsoft.com/azure/app-service/deploy-configure-credentials?tabs=cli#disable-basic-authentication).
 
 ```yml
 resource azureFunction 'Microsoft.Web/sites@2020-12-01' = {
@@ -58,7 +58,7 @@ resource azureFunction 'Microsoft.Web/sites@2020-12-01' = {
 
 ```
 
-I can use the Azure CLI to deploy the Bicep template.
+I can use the [Azure CLI](https://docs.microsoft.com/cli/azure/) to deploy the Bicep template.
 
 ```bash
 RESOURCE_GROUP_NAME="rg-azure-function-zip-deploy"
@@ -72,7 +72,7 @@ az deployment sub create \
 
 ## Create a service principal (optional)
 
-I’m going to need a valid Azure account to authenticate against the SCM REST API.  I could use my account, which is what I’ve logged into via the Azure CLI. However, to demonstrate that the deployment works with a restricted set of rights and scope, I’m going to [create a service principal](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cl) and give that service principal [“Website Contributor”](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#website-contributor) rights to only the newly created Azure Function app.
+I’m going to need a valid Azure account to authenticate against the SCM REST API.  I could use my account, which is what I’ve logged into via the Azure CLI. However, to demonstrate that the deployment works with a restricted set of rights and scope, I’m going to [create a service principal](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cl) and give that service principal [“Website Contributor”](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#website-contributor) rights to only the newly created Azure Function app.
 
 ```bash
 SCOPE='/subscriptions/[SUBSCRIPTION-ID]/resourceGroups/rg-azure-function-zip-deploy/providers/Microsoft.Web/sites/[FUNCTION-APP-NAME]'
