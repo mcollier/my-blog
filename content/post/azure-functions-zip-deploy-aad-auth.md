@@ -14,6 +14,8 @@ The documentation for [“Deploy ZIP file with REST APIs”](https://docs.micros
 
 As stated in the [documentation](https://docs.microsoft.com/azure/app-service/deploy-configure-credentials?tabs=cli#disable-access-to-the-api), the SCM REST API is backed by Azure RBAC.  I couldn’t find any reference on how to use the SCM REST API to perform a zip deployment. Does the _/zipdeploy_ endpoint work with AAD-based authentication?
 
+> UPDATE: As of December 8th, the [documentation](https://docs.microsoft.com/azure/azure-functions/deployment-zip-push#azure-ad-authentication) shows how to use Azure AD authentication with ZIP deploy for the SCM REST API.
+
 I reached out to a colleague who helped figure out that, yes, it is possible to use the _/zipdeploy_ SCM REST API with AAD-based authentication!
 
 Let’s go through the steps.
