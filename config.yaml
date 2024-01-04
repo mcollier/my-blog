@@ -4,7 +4,7 @@ theme: ["mainroad"]
 copyright: "Michael S. Collier"
 disqusShortname: "mcollier-blog"
 languageCode: "en-us"
-googleAnalytics: "UA-156433646-1"
+# googleAnalytics: "UA-156433646-1"
 enableEmoji: true
 enableGitInfo: true
 
@@ -44,6 +44,10 @@ params:
       twitter: michaelcollier
       github: mcollier
       linkedin: mcollier
+
+services:
+  googleAnalytics:
+    ID: G-1256JQMX52
 
 permalinks:
   post: "/:filename/"
