@@ -8,3 +8,10 @@ description = "How to contact me."
 ## Contact
 
 Find me on the interwebs!
+
+- [GitHub](https://github.com/mcollier)
+- [Twitter/X](https://x.com/michaelcollier)
+- [Threads](https://www.threads.net/@michaelcollier01)
+- [LinkedIn](https://www.linkedin.com/in/mcollier/)
+- [Mastadon](https://hachyderm.io/@michaelcollier)
+- BlueSky
