@@ -47,7 +47,7 @@ params:
 
 services:
   googleAnalytics:
-    ID: G-1256JQMX52
+    ID: G-KY6W41KVC7
 
 permalinks:
   post: "/:filename/"
