@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "New Year and Back to Blogging"
-date: 2024-01-03T16:00:00-05:00
+date: 2024-01-04T21:00:00-05:00
 categories: 
 author: "Michael S. Collier"
 tags:
