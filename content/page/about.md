@@ -1,13 +1,15 @@
 ---
 title: "About"
-date: 2019-05-15T00:23:00-04:00
+date: 2025-02-09T00:23:00-04:00
 author: "Michael S. Collier"
 description: "Things about me."
 ---
 
 ## About Me
 
-Michael is a Principal Software Development Engineer in Microsoft’s Industry Solutions Engineering (ISE) organization.  Michael engages deeply with Microsoft’s top customers to help them build serverless solutions with demanding requirements. He has a vast amount of experience in helping companies determine the best strategy for adopting cloud computing, and providing the insight and hands-on experience to ensure they are successful. Michael is also a respected technology community leader, and is often found sharing his insights and experiences at regional and national conferences.  Michael is also the co-author of two published books on Microsoft Azure, _Microsoft Azure Essentials: Fundamentals of Azure_ (1st and 2nd Edition).
+I am a proven and results-driven Software Engineer/Architect with over 24 years of extensive experience in software development and architecture. Substantial expertise in leading the architectural and development efforts for multiple high-profile clients, deploying robust Azure-based solutions. Adept at managing complex technical and business requirements, I bring a deep understanding of modern software platforms and technologies. Recognized for spearheading multiple impactful initiatives, I excel in creating innovative solutions that drive efficiency and performance. Proficient in a wide range of platforms and languages, I am dedicated to delivering excellence in every project
+
+I am is also a respected technology community leader, and is often found sharing my insights and experiences at regional and national conferences.  I am also the co-author of two published books on Microsoft Azure, _Microsoft Azure Essentials: Fundamentals of Azure_ (1st and 2nd Edition).
 
 ## About this blog
 

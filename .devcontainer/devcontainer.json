@@ -1,0 +1,11 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "github.vscode-github-actions"
+            ]
+        }
+    },
+    "forwardPorts": []
+}
