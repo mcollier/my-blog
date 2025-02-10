@@ -1,0 +1,20 @@
+{
+    "name": "Hugo-Debian-Bookworm",
+    "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "github.vscode-github-actions",
+                "DavidAnson.vscode-markdownlint"
+            ]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/git": {},
+        "ghcr.io/devcontainers/features/hugo": {
+            "version": "0.121.0"
+        },
+        "ghcr.io/devcontainers/features/go": {}
+    },
+    "forwardPorts": []
+}

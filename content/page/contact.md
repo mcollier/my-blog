@@ -14,4 +14,4 @@ Find me on the interwebs!
 - [Threads](https://www.threads.net/@michaelcollier01)
 - [LinkedIn](https://www.linkedin.com/in/mcollier/)
 - [Mastadon](https://hachyderm.io/@michaelcollier)
-- BlueSky
+- [BlueSky](https://bsky.app/profile/michaelcollier.bsky.social)
