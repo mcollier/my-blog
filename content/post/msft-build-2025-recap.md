@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Microsoft Build 2025 Recap"
-date: 2025-05-19T04:56:16Z
+date: 2025-05-23
 categories:
 author: "Michael S. Collier"
 tags: [azure-openai, AI, agents]
