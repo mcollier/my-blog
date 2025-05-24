@@ -16,13 +16,15 @@ Microsoft Build 2025 centered on the future of intelligent agent-based applicati
 
 **Agents. Agents. Agents communicating with agents.**
 
-That was the unmistakable theme at Microsoft Build 2025. It’s clear Microsoft is all-in on the agentic future, positioning agents as the new foundation for how apps are built, interact, and scale.
+That was the unmistakable theme at Microsoft Build 2025. It’s clear Microsoft is all-in on the agentic future, positioning agents as the new foundation for how apps are built, interact, and scale. Rare was the session that didn't at least mention AI or [MCP](https://modelcontextprotocol.io/introduction).
 
-But let’s be honest: it’s still early days. The tooling is fragmented, the use cases are emerging, and the hype is . . . palpable. Still, you can feel something powerful forming. The next few months, not just the next year, will be telling.
+But let’s be honest: it’s still early days. The tooling is fragmented, the use cases are emerging, and the hype is . . . palpable. Still, you can feel something powerful forming. The next few months, not just the next year, will be a wild ride as the technology, including the developer tooling, continues to evolve.
 
 And every time someone mentioned "agents", this images comes to my mind:
 
 {{< figure src="/images/msft-build-2025-recap/chatgpt-agent-smith.png" class="agent-image">}}
+
+I was fortunate to attend with my [Centric Consulting](https://www.centricconsulting.com/) colleague, [Shawn Wallace](https://www.shawnewallace.com/).  Be sure to checkout [Shawn's Build 2025 recap](https://www.shawnewallace.com/2025-05-23-microsoft-build-2025-recap/) too!
 
 Let's dive into my day-by-day recap, from keynotes to labs.
 
@@ -38,7 +40,7 @@ I got in line about 45 minutes before doors opened at 8am. By 8:45am, Build kick
 - The announcement of [GitHub Copilot Coding Agent](https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/) (formerly Project Padawan). Currently gated behind [GitHub Copilot Pro+](https://docs.github.com/en/copilot/about-github-copilot/plans-for-github-copilot), but fingers crossed this becomes more accessible soon!
 - **Azure AI Foundry** continues to grow with exciting new capabilities.
 - Special guests included **Sam Altman (OpenAI CEO)**, who shared valuable insights on developer productivity, and [OpenAI's Codex](https://openai.com/index/introducing-codex/). Unfortunately, **Elon Musk** also made an unsurprisingly incoherent appearance to promote Grok's inclusion in Azure AI Foundry.  Moving on. 🤷‍♂️
-- **Kevin Scott (Microsoft CTO)** introduced [NLWeb](https://news.microsoft.com/source/features/company-news/introducing-nlweb-bringing-conversational-interfaces-directly-to-the-web/?msockid=391a5e1ff6be6b070ee04bf9f7c56a98), speaking unscripted, with energy, and clarity. 
+- **Kevin Scott (Microsoft CTO)** introduced [NLWeb](https://news.microsoft.com/source/features/company-news/introducing-nlweb-bringing-conversational-interfaces-directly-to-the-web/?msockid=391a5e1ff6be6b070ee04bf9f7c56a98), speaking unscripted, with energy, and clarity.
 
 If missed it, watch the keynote [here](https://build.microsoft.com/en-US/sessions/KEY010?source=/schedule)
 
@@ -91,6 +93,14 @@ For day 2, I attended a few in-person labs.  This was a great way to hands-on ex
 - :microphone: [Best practices for building agentic apps with Azure AI Foundry](https://build.microsoft.com/en-US/sessions/BRK152)
 
 :mag: **Favorite session:**  I continue to be impressed and excited by [.NET Aspire](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview).  It was great to hear how other Build attendees are using Aspire and the challenges they're having.  The .NET Aspire team was receptive to feedback and understanding how people are using Aspire. Aspire's come a long way in the last year.  I'm really excited about what the future holds!
+
+:zap: **Bonus** The [Best practices for building agentic apps with Azure AI Foundry](https://build.microsoft.com/en-US/sessions/BRK152) session, led by **Seth Juarez**, **Amanda Foster**, and **Elijah Straight**, was both fun and deeply informative. They shared plenty of real-world code and walked us through how they built the keynote demo (code available on [GitHub](https://github.com/sethjuarez/sustineo)).
+
+What really got me thinking was the architecture behind multi-agent systems. Coming from a background with **Durable Functions** and **Logic Apps**, I kept drawing parallels to durable workflows. If I already have a well-defined sequence of steps, when does it make sense to reach for a multi-agent architecture instead? What advantages do agents offer over a tried-and-true durable workflow, especially when you consider built-in resilience and state management?  **Chris Gillum** has an [excellent writeup](https://blog.cgillum.tech/building-serverless-ai-agents-using-durable-functions-on-azure-e1272882082c) on this topic.
+
+This is an area I want to explore more, particularly how agents can collaborate dynamically when the workflow isn't fully known up front.
+
+![mult-agent orchestration](/images/msft-build-2025-recap/build2025-multi-agent-orchestration.jpg)
 
 :bulb: **Key takeaway:**
 The labs were OK.  They are mostly copy & paste.  If you want, you can complete quickly.  I don't recommend that, as you're likely not learning much.  Much of the **lab content is online, so you can go back and review at your own pace**, which I like.  There were some hiccups in the labs, likely due to the fact that many products used in the labs were updated the week of Build, and thus some of the prepared content didn't match any longer.  The proctors did good coaching participants through those areas.
