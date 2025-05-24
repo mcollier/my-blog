@@ -1,3 +1,42 @@
+.custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.9);
+}
+
+.custom-modal-content {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 80%;
+}
+
+.custom-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.custom-gallery img {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.custom-gallery img:hover {
+  opacity: 0.8;
+}
+
 .custom-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -19,4 +58,7 @@
 .agent-image img {
     width: 25%;
     height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

@@ -1,7 +1,36 @@
-<div class="custom-gallery">
+<!-- <div class="custom-gallery">
   {{ range .Params }}
     <div class="custom-gallery-item">
       <img src="{{ . }}" alt="Gallery image">
     </div>
   {{ end }}
+</div> -->
+
+
+
+<div class="custom-gallery">
+  {{ $uid := now.UnixNano }} <!-- Unique ID to prevent clashes -->
+  {{ range $index, $img := .Params }}
+    <div class="custom-gallery-item">
+      <img src="{{ $img }}" alt="Gallery image" onclick="openModal('{{ $uid }}', '{{ $img }}')" />
+    </div>
+  {{ end }}
 </div>
+
+<!-- Modal Container -->
+<div id="modal_{{ $uid }}" class="custom-modal" onclick="closeModal('{{ $uid }}')">
+  <span class="custom-modal-close">&times;</span>
+  <img class="custom-modal-content" id="modalImg_{{ $uid }}">
+</div>
+
+<script>
+  // Use a single modal function with the unique ID as a parameter
+  function openModal(uid, src) {
+    document.getElementById("modal_" + uid).style.display = "block";
+    document.getElementById("modalImg_" + uid).src = src;
+  }
+
+  function closeModal(uid) {
+    document.getElementById("modal_" + uid).style.display = "none";
+  }
+</script>
