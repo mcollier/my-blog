@@ -26,6 +26,7 @@ params:
   pager: true
   readingTimeText: "Estimated reading time:"
   dateFormat: "Mon, Jan 2, 2006"
+  customCSS: ["css/custom.css"]
   style:
     vars:
       highlightColor: "#0078D4"
