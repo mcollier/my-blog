@@ -1,11 +1,12 @@
 {
-    "name": "Hugo-Debian-Bookworm",
+    "name": "My Hugo Dev Container",
     "image": "mcr.microsoft.com/devcontainers/base:bookworm",
     "customizations": {
         "vscode": {
             "extensions": [
                 "github.vscode-github-actions",
-                "DavidAnson.vscode-markdownlint"
+                "DavidAnson.vscode-markdownlint",
+                "yzhang.markdown-all-in-one"
             ]
         }
     },
