@@ -4,7 +4,6 @@ title: "Dotnet Run App"
 date: 2025-05-30
 author: "Michael S. Collier"
 tags: [dotnet]
-draft: true
 ---
 
 Have you ever had a moment of inspiration, an idea you wanted to test in C#, but didn’t want to spin up a full project just to run a few lines of code? Same here.
