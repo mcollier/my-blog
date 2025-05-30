@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Dotnet Run App"
-date: 2025-05-30T20:42:45Z
+date: 2025-05-30
 author: "Michael S. Collier"
 tags: [dotnet]
 draft: true
