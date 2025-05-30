@@ -107,6 +107,8 @@ And honestly… with features like this, I may never need to write another shell
 
 Try it out, share your experiments, and let me know what you build! I’m especially curious if you’ve found creative ways to use this in your day-to-day development.
 
+> Check out my _very simple_ sample repo at [https://github.com/mcollier/dotnet-run-demo](https://github.com/mcollier/dotnet-run-demo) (used to help write this post).
+
 You can read more in the official .NET blog post:
 :point_right: [Announcing dotnet run app.cs - A simpler way to start with C# and .NET 10](https://devblogs.microsoft.com/dotnet/announcing-dotnet-run-app-cs/)
 
