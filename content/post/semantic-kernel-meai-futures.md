@@ -3,7 +3,7 @@ layout: post
 title: "Navigating Microsoft's AI Landscape: From Microsoft.Extensions.AI to Semantic Kernel"
 author: "Michael S. Collier"
 date: 2025-06-04
-tags: [dotnet, semantic kernel, AI]
+tags: [dotnet, semantic-kernel, ai]
 ---
 
 It seems increasingly clear that [Semantic Kernel](https://learn.microsoft.com/semantic-kernel/overview/) is where Microsoft is investing for building modern, robust AI applications. In fact, Microsoft has [stated](https://devblogs.microsoft.com/foundry/semantic-kernel-commitment-ai-innovation/) as much: **"Semantic Kernel (is) central to Microsoft's enterprise AI story"**.
