@@ -14,4 +14,4 @@ I plan to focus on the foundational abstractions in Microsoft.Extensions.AI and 
 
 The road may be a bit bumpy as Microsoft starts to consolidate their developer frameworks, so hold on! I'm looking forward to the journey!
 
-_P.S. There are lots of exciting, enterprise-grade innovations happening on the “low code” Copilot Studio side of the house too, such as Copilot Tuning, multi-agent orchestration, Entra Agent ID, and M365 Agents Toolkit!  Exciting times!!_
+_P.S. There are lots of exciting, enterprise-grade innovations happening on the "low code" Copilot Studio side of the house too, such as Copilot Tuning, multi-agent orchestration, Entra Agent ID, and M365 Agents Toolkit! Exciting times!_
