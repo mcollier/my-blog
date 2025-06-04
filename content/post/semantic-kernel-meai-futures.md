@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Navigating Microsoft’s AI Landscape: From Microsoft.Extensions.AI to Semantic Kernel"
+title: "Navigating Microsoft's AI Landscape: From Microsoft.Extensions.AI to Semantic Kernel"
 author: "Michael S. Collier"
 date: 2025-06-04
 tags: [dotnet, semantic kernel, AI]
