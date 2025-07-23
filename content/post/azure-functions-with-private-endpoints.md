@@ -18,6 +18,8 @@ I feel the story is changing.  With the introduction of Azure Virtual Network se
 
 This post will detail how I am able to configure an Azure Function to work with Azure resources using [private endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-overview). By using private endpoints, I ensure that the resources are accessible only via my virtual network.  The Azure Function app will communicate with designated resources using a resource-specific private IP address (e.g. 10.100.0/24 address space).  This gives me an additional level of network-based security and control.
 
+> **March 2021 update**:  It is now possible to have a private endpoint enabled Azure Storage account referenced by both the _AzureWebJobsStorage_ and _WEBSITE_CONTENTAZUREFILECONNECTIONSTRING_ application settings.  The post has been updated.  Please refer to the [Microsoft documentation](https://docs.microsoft.com/azure/azure-functions/configure-networking-how-to#restrict-your-storage-account-to-a-virtual-network) for more information.
+
 The sample shown in this post, and [accompanying GitHub repository](https://github.com/mcollier/azure-functions-private-storage), discusses the following key concepts necessary to use private endpoints with Azure Functions:
 
 - Azure Function with blob trigger and CosmosDB output binding
@@ -169,13 +171,13 @@ Private endpoints automatically create Azure DNS Private Zones.  The Azure DNS P
 
 ## Azure Storage Private Endpoints
 
-Azure Functions requires an Azure Storage account for persisting runtime metadata and metadata related to various triggers. The official Microsoft [documentation indicates that it is currently not possible to use Azure Functions with a storage account which uses virtual network restrictions](https://docs.microsoft.com/azure/azure-functions/functions-networking-options#restrict-your-storage-account-to-a-virtual-network).  While that's mostly true, there is a workaround.
+Azure Functions requires an Azure Storage account for persisting runtime metadata and metadata related to various triggers. ~~The official Microsoft [documentation indicates that it is currently not possible to use Azure Functions with a storage account which uses virtual network restrictions](https://docs.microsoft.com/azure/azure-functions/functions-networking-options#restrict-your-storage-account-to-a-virtual-network).  While that's mostly true, there is a workaround.~~
 
-The workaround being that it is possible to put virtual network restrictions on the Azure storage account referenced via the [AzureWebJobsStorage](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#azurewebjobsstorage) application setting. However, if that is done, then a separate storage account - _one without network restrictions_ - is needed.
+~~The workaround being that it is possible to put virtual network restrictions on the Azure storage account referenced via the [AzureWebJobsStorage](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#azurewebjobsstorage) application setting. However, if that is done, then a separate storage account - _one without network restrictions_ - is needed.~~
 
-The other (without network restrictions) storage account needs to be referenced via the [WEBSITE_CONTENTAZUREFILECONNECTIONSTRING](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#website_contentazurefileconnectionstring) application setting.  It is this storage account that will contain an Azure File share used to persist the function's application code.
+~~The other (without network restrictions) storage account needs to be referenced via the [WEBSITE_CONTENTAZUREFILECONNECTIONSTRING](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#website_contentazurefileconnectionstring) application setting.  It is this storage account that will contain an Azure File share used to persist the function's application code.~~
 
-> I expect the need to use two separate storage accounts, one with vnet restrictions and one without, will change relatively soon.  It was mentioned during the [April 2020 Azure Functions Live webcast](https://youtu.be/x2fTgWkbhLY?t=1490) that the team is working to remove this restriction.  Once that is done, you'll be able to keep everything confined to the virtual network.
+> ~~I expect the need to use two separate storage accounts, one with vnet restrictions and one without, will change relatively soon.  It was mentioned during the [April 2020 Azure Functions Live webcast](https://youtu.be/x2fTgWkbhLY?t=1490) that the team is working to remove this restriction.  Once that is done, you'll be able to keep everything confined to the virtual network.~~
 
 Furthermore, for this sample, a third storage account is used.  This third storage account is used by the sample application code - it's where the CSV blob file will be placed.  The Function blob trigger will pick up this file and the function will do work against it.  This storage account will also use a private endpoint.
 
@@ -185,7 +187,7 @@ The sample will use three Azure storage related application settings:
 |------|-------|-------------------------------|
 | CensusResultsAzureStorageConnection | The connection string for an Azure Storage account used by the function's blob trigger. | Yes |
 | [AzureWebJobsStorage](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#azurewebjobsstorage) | The connection string for an Azure Storage account required by Azure Functions. | Yes |
-| [WEBSITE_CONTENTAZUREFILECONNECTIONSTRING](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#website_contentazurefileconnectionstring) | The connection string references an Azure Storage account which contains an Azure File share used to store the application content/code. | No |
+| [WEBSITE_CONTENTAZUREFILECONNECTIONSTRING](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#website_contentazurefileconnectionstring) | The connection string references an Azure Storage account which contains an Azure File share used to store the application content/code. | ~~No~~ Yes |
 
 When using private endpoints for Azure Storage, it is necessary to create a private endpoint for each Azure Storage service (table, blob, queue, or file).  Therefore, this samples sets up 5 private endpoints related to Azure Storage.
 
