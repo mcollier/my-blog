@@ -24,7 +24,7 @@ In this lightning talk, we’ll explore the new Azure Durable Task Scheduler, a 
 
 ## August 13th: Agentic Workflows with Azure Functions and Friends
 
-:calendar: Wednesday, August 13th @ 5:30pm
+:calendar: **Wednesday, August 13th @ 5:30pm**
 
 :pushpin: [Central Ohio .NET Developer Group](https://www.meetup.com/central-ohio-net-developers-group-condg/events/308526649/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link&utm_version=v2)
 
@@ -34,7 +34,7 @@ In this session, we’ll explore how to build scalable, serverless agentic workf
 
 ## August 28th: Agentic Workflows with Azure Functions and Friends
 
-:calendar: **Thursday, August 28th at 5:30pm**
+:calendar: **Thursday, August 28th @ 5:30pm**
 
 :pushpin: [Azure Columbus](https://www.meetup.com/central-ohio-azure/events/307350088/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link)
 
