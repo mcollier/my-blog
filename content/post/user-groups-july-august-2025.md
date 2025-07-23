@@ -22,7 +22,7 @@ I'll be giving a lightning talk on getting started with the new Azure Durable Ta
 
 In this lightning talk, we’ll explore the new Azure Durable Task Scheduler, a powerful tool for orchestrating durable workflows in .NET. You’ll learn how it solves common challenges with BYO storage providers, all while providing often requested features such as a local emulator, management dashboard, and other benefits of a managed service. We’ll walk through how to get it running both in Azure and locally, and I’ll demo how it integrates seamlessly with Azure Durable Functions to build resilient, scheduled workflows with minimal code.
 
-## August 13th: Agentic Workflows with Azure Functions and Friends
+## August 13: Agentic Workflows with Azure Functions and Friends
 
 :calendar: **Wednesday, August 13th @ 5:30pm**
 
@@ -32,7 +32,7 @@ Agent-based AI systems are reshaping how we build intelligent applications. How 
 
 In this session, we’ll explore how to build scalable, serverless agentic workflows using the latest from the Microsoft ecosystem. You’ll see how .NET Aspire simplifies service composition and observability, how Azure Functions offers elastic execution for orchestration, and how Semantic Kernel and Azure OpenAI enable you to craft intelligent, multi-step AI agents with real-world utility.
 
-## August 28th: Agentic Workflows with Azure Functions and Friends
+## August 28: Agentic Workflows with Azure Functions and Friends
 
 :calendar: **Thursday, August 28th @ 5:30pm**
 
