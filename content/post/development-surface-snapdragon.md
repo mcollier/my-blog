@@ -21,6 +21,7 @@ But when it comes to software development, I've had a few relatively minor chall
 One of the first roadblocks I hit was Docker. I use Docker heavily in my development environment. The first thing I set up on any new project is a Visual Studio Code dev container. I love the ability to have a known-good environment that I can use locally or in a GitHub Codespace.
 
 Initially, I installed [Docker Desktop](https://www.docker.com/products/docker-desktop/) using my usual [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/) configuration file (which I use to quickly configure new machines). But I kept running into runtime issues. While Docker Desktop did install, it continually failed to start, and I was getting errors I hadn't seen before - "wsl.exe --mount on ARM64 requires Windows version 27653 or newer."
+
 ![Docker Desktop error](/images/development-surface-snapdragon/docker-desktop-arm64-wsl-error-sm.png)
 
 Even after applying all the Windows updates, my new PC is running Windows 11 version 24H2, OS Build 26100.4652.
