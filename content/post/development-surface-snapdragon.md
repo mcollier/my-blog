@@ -8,7 +8,7 @@ tags: [Windows, ARM, WSL2, Dev Containers, Azure Functions]
 
 This week I was excited to _finally_ get my hands on a new PC for my personal use.  I purchased one of the [new ARM-based Surface Laptop Copilot+ PCs](https://www.microsoft.com/en-us/store/configure/surface-laptop-15-inch/8mzbmmcjzqc4). As a developer focused on .NET and Azure, I was eager to see how well this sleek new machine could handle my day-to-day workflow.
 
-While performance and battery life have impressed me so far, I’ve run into a few bumps in the road when it comes to local development, especially in areas that rely on platform-specific tooling or containerized environments. In this post, I’ll highlight a couple early challenges I’ve encountered and what I did to work around them. I’ll update this post as I learn more and adapt my setup.
+While performance and battery life have impressed me so far, I’ve run into a few bumps in the road when it comes to local development, especially in areas that rely on platform-specific tooling or containerized environments. In this post, I’ll highlight a couple of early challenges I’ve encountered and what I did to work around them. I’ll update this post as I learn more and adapt my setup.
 
 ## :bulb: Why ARM64
 
@@ -18,9 +18,9 @@ But when it comes to software development, I've had a few relatively minor chall
 
 ## :construction: Challenge 1: Docker Desktop Didn’t Work (At First)
 
-One of the first roadblocks I hit was Docker. I use Docker heavily in my development environment. The first thing I set up on any new project is a Visual Studio Code dev container. I love the ability to have a known-good environment that I an use locally or in a GitHub Codespace.
+One of the first roadblocks I hit was Docker. I use Docker heavily in my development environment. The first thing I set up on any new project is a Visual Studio Code dev container. I love the ability to have a known-good environment that I can use locally or in a GitHub Codespace.
 
-Initially, I installed Docker Desktop using my usual Winget configuration file (which I use to quickly configure new machines). But I kept running into runtime issues. While Docker Desktop did install, it continually failed to start, with Containers wouldn’t start, and I was getting errors I hadn’t seen before - "wsl.exe --mount on ARM64 requires Windows version 27653 or newer."
+Initially, I installed [Docker Desktop](https://www.docker.com/products/docker-desktop/) using my usual [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/) configuration file (which I use to quickly configure new machines). But I kept running into runtime issues. While Docker Desktop did install, it continually failed to start, and I was getting errors I hadn't seen before - "wsl.exe --mount on ARM64 requires Windows version 27653 or newer."
 ![Docker Desktop error](/images/development-surface-snapdragon/docker-desktop-arm64-wsl-error-sm.png)
 
 Even after applying all the Windows updates, my new PC is running Windows 11 version 24H2, OS Build 26100.4652.
@@ -51,14 +51,14 @@ The issue?  The Azure Functions Core Tools currently has limited support for Lin
 npm install -g azure-functions-core-tools@4.0.7332-preview1
 ```
 
-That got me unblocked!  I updated by dev container configuration to install node and the Azure Functions Core Tools (preview) via NPM.
+That got me unblocked!  I updated my dev container configuration to install node and the Azure Functions Core Tools (preview) via NPM.
 
 ## :white_check_mark: What’s Working Well
 
 Despite these early hiccups, a lot is working really well:
 
 - .NET SDKs run great on ARM64. No issues compiling or running apps.
-- Visual Studio Code wicked is fast and stable, with extensions working as expected.
+- Visual Studio Code is wicked fast and stable, with extensions working as expected.
 - GitHub Codespaces might be a good fallback strategy if local tooling proves unreliable.
 
 ## :thought_balloon: Final Thoughts (For Now)
