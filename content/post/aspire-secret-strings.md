@@ -7,7 +7,7 @@ tags: [dotnet, aspire]
 draft: true
 ---
 
-If you're building modern .NET Aspire apps, you're probably familiar with how service names and resource identifiers are often passed around as string literals—things like `"apiservice"` or `"storage"`. But these **magic strings** can lead to headaches: typos, duplication, poor discoverability, and painful refactoring.
+If you're building modern .NET Aspire apps, you're probably familiar with how service names and resource identifiers are often passed around as string literals, things like `"apiservice"` or `"storage"`. But these **magic strings** can lead to headaches: typos, duplication, poor discoverability, and painful refactoring.
 
 Thankfully, there's a clean and safe way to centralize and manage these identifiers using a shared constants class, **removing "secret strings" from your Aspire project.** :boom:
 
@@ -32,7 +32,9 @@ var blobs = storage.AddBlobs("blobs");
 var queues = storage.AddQueues("queues");
 ```
 
-These string literals (`"apiservice"`, `"storage"`, `"blobs"`, etc.) are fragile and hard to reuse safely across your codebase.
+These string literals (`"apiservice"`, `"storage"`, `"blobs"`, etc.) are fragile and hard to reuse safely across your codebase. 
+
+> One minor typo and things don't work and you're left scratching your head for a while, only to later realize you can't spell. Been there.
 
 ## 🛠 Step 1: Create a New Shared Project
 
@@ -119,11 +121,17 @@ If you have other Aspire projects (e.g., frontend apps or background workers) th
 <ProjectReference Include="..\Shared\Shared.csproj" IsAspireProjectResource="false" />
 ```
 
+And the code then becomes:
+
+```csharp
+builder.AddAzureQueueServiceClient(Services.AzureStorageQueues);
+```
+
 Now your whole solution can rely on centralized, strongly-typed service identifiers.
 
-## :bell: Bonus: Shorten Project Names with AspireProjectMetadataTypeName
+## :bell: Bonus: Shorten Project Names
 
-In addition to removing magic strings, you can simplify long project names in Aspire by explicitly specifying the metadata type name in your project reference.
+In addition to removing magic strings, you can simplify long project names in Aspire by explicitly specifying the `AspireProjectMetadataTypeName` metadata type name in your project reference.
 
 ### :hourglass_flowing_sand: Old
 
