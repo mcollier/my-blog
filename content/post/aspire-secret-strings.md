@@ -4,7 +4,6 @@ title: "Removing Secret Strings from Your .NET Aspire Project"
 author: "Michael S. Collier"
 date: 2025-08-07T03:28:59Z
 tags: [dotnet, aspire]
-draft: true
 ---
 
 If you're building modern .NET Aspire apps, you're probably familiar with how service names and resource identifiers are often passed around as string literals, things like `"apiservice"` or `"storage"`. But these **magic strings** can lead to headaches: typos, duplication, poor discoverability, and painful refactoring.
@@ -13,7 +12,7 @@ Thankfully, there's a clean and safe way to centralize and manage these identifi
 
 ## :sparkles: Credit Where Credit’s Due
 
-First, big thanks to [Jeff Fritz](https://www.youtube.com/@csharpfritz) for showcasing this pattern in his excellent video: [“Organize your .NET Aspire Projects like a Pro!”](https://www.youtube.com/watch?v=Jt39GzYCRgo). This post builds directly on that idea and shows how you can apply it to both project references and cloud resources like Azure Storage.
+First, big thanks to [Jeff Fritz](https://www.youtube.com/@csharpfritz) for showcasing this pattern in his excellent video: [“Organize your .NET Aspire Projects like a Pro!”](https://www.youtube.com/watch?v=Jt39GzYCRgo). I also saw Jeff share this approach during his [excellent talk at StirTrek](https://youtu.be/wHX9we3Vx64?si=B6gwD_YVyPVrIKgB) earlier this year. This post builds directly on that idea and shows how you can apply it to both project references and cloud resources like Azure Storage.
 
 ## :dart: The Problem: Magic Strings in AppHost.cs
 
@@ -32,11 +31,11 @@ var blobs = storage.AddBlobs("blobs");
 var queues = storage.AddQueues("queues");
 ```
 
-These string literals (`"apiservice"`, `"storage"`, `"blobs"`, etc.) are fragile and hard to reuse safely across your codebase. 
+These string literals (`"apiservice"`, `"storage"`, `"blobs"`, etc.) are fragile and hard to reuse safely across your codebase.
 
-> One minor typo and things don't work and you're left scratching your head for a while, only to later realize you can't spell. Been there.
+> One minor typo and things don't work and you're left scratching your head for a while, only to later realize you can't spell. Been there. :unamused:
 
-## 🛠 Step 1: Create a New Shared Project
+## :wrench: Step 1: Create a New Shared Project
 
 Create a new class library in your solution:
 
@@ -115,11 +114,7 @@ Cleaner. Safer. Easier to manage. :bulb:
 
 ## :balloon: Step 5: Reference Shared in Client Projects (Optional)
 
-If you have other Aspire projects (e.g., frontend apps or background workers) that also use these service names, add a project reference to `Shared` there as well. 
-
-```xml
-<ProjectReference Include="..\Shared\Shared.csproj" IsAspireProjectResource="false" />
-```
+If you have other Aspire projects (e.g., frontend apps or background workers) that also use these service names, add a project reference to `Shared` there as well.
 
 And the code then becomes:
 
