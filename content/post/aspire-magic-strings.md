@@ -1,7 +1,10 @@
 ---
 layout: post
-title: "Removing Secret Strings from Your .NET Aspire Project"
+title: "Removing Magic Strings from Your .NET Aspire Project"
 author: "Michael S. Collier"
+url: "aspire-magic-strings"
+aliases:
+    - "/aspire-secret-strings/"
 date: 2025-08-07T03:28:59Z
 tags: [dotnet, aspire]
 ---
