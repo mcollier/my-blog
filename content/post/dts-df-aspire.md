@@ -2,11 +2,14 @@
 title: "Durable Task Scheduler + Durable Functions + .NET Aspire"
 date: 2025-10-09T02:42:45Z
 draft: true
+categories: [azure-functions]
+author: "Michael S. Collier"
+tags: [azure-functions, aspire]
 ---
 
-It's no secret that I love Azure Functions (just take a look at my prior posts).  That love extends to Azure Durable Functions.  As much as I love Durable Functions, there are certainly some challenges with using Azure Storage as a backend. The new Durable Task Scheduler service looks well-positioned to remedy many of those challenges.  The best things comes in three, so I thought it would be fun to use .NET Aspire to help coordinate my Durable Functions project and Durable Task Scheduler.  Durable Functions + Durable Task Scheduler + .NET Aspire == Awesome!
+It's no secret that I love Azure Functions (just take a look at my prior posts).  That love extends to Azure Durable Functions.  As much as I love Durable Functions, there are certainly some challenges with using Azure Storage as a backend. The new Durable Task Scheduler service looks well-positioned to remedy many of those challenges.  The best things comes in threes, so I thought it would be fun to use .NET Aspire to help coordinate my Durable Functions project and Durable Task Scheduler (DTS).  Durable Functions + Durable Task Scheduler + .NET Aspire == Awesome!
 
-I love this setup, especially for local development.  By using .NET Aspire, I've found it easy to set up my Durable Functions project, along with the Durable Task Scheduler emulator.  I let Aspire ensure the emulator is going - one less thing for me to worry about.  Aspire can spin up any container via the `AddContainer` method:
+I love this setup, especially for local development.  By using .NET Aspire, I've found it easy to set up my Durable Functions project, along with the Durable Task Scheduler emulator.  I let Aspire ensure the emulator is running - one less thing for me to worry about.  Aspire can spin up any container via the `AddContainer` method:
 
 ``` csharp
 var dts = builder.AddContainer("dts", "mcr.microsoft.com/dts/dts-emulator:latest")
@@ -17,9 +20,9 @@ var dts = builder.AddContainer("dts", "mcr.microsoft.com/dts/dts-emulator:latest
 
 One dependency solved!  Next?
 
-Azure Functions has a dependency on Azure Storge.  That dependency doesn't go away just because I'm using Durable Task Scheduler.  Azure Storage is still needed.  Aspire helps here too, as I can use Aspire's existing Azure Storage integration, running the Azure Storage emulator locally.  
+Azure Functions has a dependency on Azure Storage.  That dependency doesn't go away just because I'm using Durable Task Scheduler.  Azure Storage is still needed.  Even when DTS backs orchestration state, the Functions host still requires Azure Storage for triggers/bindings and host checkpoints, so Azurite remains part of the local stack.  Aspire helps here too, as I can use Aspire's existing Azure Storage integration, running the Azure Storage emulator locally.  
 
-```csharp
+``` csharp
 var storage = builder.AddAzureStorage(Shared.Services.AzureStorage)
                      .RunAsEmulator(azurite =>
                      {
@@ -30,7 +33,7 @@ var storage = builder.AddAzureStorage(Shared.Services.AzureStorage)
                      });
 ```
 
-Here I'm setting up Aspire to use the Azure Storage emulator, and setting consistent ports for the table, blob, and queue service. If I don't, Aspire assigns random ports.  The consistent ports makes it easy for me to connect to the Azure Storage service emulator via tools such as Azure Storage Explorer.
+Here I'm setting up Aspire to use the Azure Storage emulator, and setting consistent ports for the table, blob, and queue service. If I don't, Aspire assigns random ports.  The consistent ports make it easy for me to connect to the Azure Storage service emulator via tools such as Azure Storage Explorer.
 
 Now I've got Aspire handling the following:
 
@@ -40,12 +43,12 @@ Now I've got Aspire handling the following:
 
 Winning!
 
-There are two parameters I want to pull in from my Aspire AppHost's _appSettings.json_ file:
+Additionally, I flow two values from the AppHost’s appsettings: the DTS connection string and the task hub name. Aspire exposes them as parameters and injects them as environment variables consumed by the Functions app
 
-- Azure Durable Task Scheduler connection string: the connection string the local Durable Task Scheduler emulator
+- Azure Durable Task Scheduler connection string: the connection string for the local Durable Task Scheduler emulator
 - Azure Durable Task Scheduler task hub name: the Durable Task hub name
 
-```json
+``` json
 "Parameters": {
     "azureDurableTaskSchedulerTaskHubName": "default",
     "azureDurableTaskSchedulerConnectionString": "Endpoint=http://localhost:8080;Authentication=None"
@@ -96,4 +99,4 @@ builder.Build().Run();
 
 ### References
 
-- https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-task-scheduler/quickstart-durable-task-scheduler?pivots=csharp
+- [Configure a Durable Functions app to use Azure Functions Durable Task Scheduler](https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-task-scheduler/quickstart-durable-task-scheduler?pivots=csharp)
