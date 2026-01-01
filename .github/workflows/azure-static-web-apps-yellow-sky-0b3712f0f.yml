@@ -15,9 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
         with:
           submodules: true
+          fetch-depth: 0
 
       - name: Install Hugo Extended
         uses: peaceiris/actions-hugo@v2
@@ -52,4 +53,4 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_YELLOW_SKY_0B3712F0F }}
           action: "close"
-          app_location: "/" # App source code path
+
