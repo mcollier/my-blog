@@ -2,7 +2,6 @@
 layout: post
 title: "Removing Magic Strings from Your .NET Aspire Project"
 author: "Michael S. Collier"
-summary: 'this is a test'
 url: "aspire-magic-strings"
 aliases:
   - "/aspire-secret-strings/"
@@ -28,13 +27,13 @@ First, big thanks to [Jeff Fritz](https://www.youtube.com/@csharpfritz) for show
 
 Here’s what the typical Aspire AppHost.cs might look like:
 
-``` csharp
+```csharp
 var apiService = builder.AddProject<Projects.AgentFunction_ApiService>("apiservice");
 ```
 
 Or when registering Azure Storage resources:
 
-``` csharp
+```csharp
 var storage = builder.AddAzureStorage("storage")
                      .RunAsEmulator();
 var blobs = storage.AddBlobs("blobs");
@@ -49,7 +48,7 @@ These string literals (`"apiservice"`, `"storage"`, `"blobs"`, etc.) are fragile
 
 Create a new class library in your solution:
 
-``` bash
+```bash
 dotnet new classlib -n Shared
 ```
 
@@ -59,7 +58,7 @@ This project will house your service and resource names.
 
 Create a static class in the Shared project:
 
-``` csharp
+```csharp
 namespace Shared;
 
 public static class Services
