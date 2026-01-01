@@ -1,0 +1,80 @@
+baseurl = "/"
+title = "Michael S. Collier"
+theme = "beautifulhugo"
+copyright = "Michael S. Collier"
+disqusShortname = "mcollier-blog"
+languageCode = "en-us"
+enableEmoji = true
+enableGitInfo = true
+rssFullContent = true
+
+[pagination]
+pagerSize = 5
+
+[params]
+mainSection = ["post", "posts"]
+disclaimerText = "The opinions expressed herein are my own personal opinions and do not represent my employer’s view in any way."
+subtitle = "Microsoft Azure and Software Engineering"
+logo = "images/headshot-3000x3000.png"
+favicon = "images/favicon.ico"
+dateFormat = "Mon, Jan 2, 2006"
+rss = true
+readingTime = true
+wordCount = true
+socialShare = true
+showRelatedPosts = true
+comments = true
+delayDisqus = false
+
+[params.author]
+    github="mcollier"
+    linkedin="mcollier"
+    stackoverflow="https://stackoverflow.com/users/183343/mcollier"
+    mastodon="https://hachyderm.io/@michaelcollier"
+    medium="michaelscollier"
+    bluesky="https://bsky.app/profile/michaelscollier.com"
+    twitter="michaelcollier"
+    website="https://michaelcollier.com"
+    name="Michael S. Collier"
+
+[markup]
+defaultMarkdownHandler = "goldmark"
+
+  [markup.highlight]
+    codeFences = true
+    lineNos = true
+    lineNoStart = 1
+    style = "github-dark"
+    lineNumbersInTable = true
+    guessSyntax = true
+
+[permalinks]
+post = "/:slug/"
+page = "/:slug/"
+
+[[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.main]]
+name = "About"
+url = "/page/about"
+weight = 2
+
+[[menu.main]]
+name = "Contact"
+url = "/page/contact"
+weight = 3
+
+[[menu.main]]
+name = "Tags"
+url = "/tags"
+weight = 4
+
+[services]
+    [services.googleAnalytics]
+    ID = "G-KY6W41KVC7"
+
+    [services.disqus]
+    shortname = "mcollier-blog"

@@ -4,12 +4,18 @@ title: "Removing Magic Strings from Your .NET Aspire Project"
 author: "Michael S. Collier"
 url: "aspire-magic-strings"
 aliases:
-    - "/aspire-secret-strings/"
-date: 2025-08-07T03:28:59Z
-tags: [dotnet, aspire]
+  - "/aspire-secret-strings/"
+date: "2025-08-07T03:28:59Z"
+tags:
+  - dotnet
+  - aspire
 ---
 
-If you're building modern .NET Aspire apps, you're probably familiar with how service names and resource identifiers are often passed around as string literals, things like `"apiservice"` or `"storage"`. But these **magic strings** can lead to headaches: typos, duplication, poor discoverability, and painful refactoring.
+If you're building modern .NET Aspire apps, you're probably familiar with how service names and resource identifiers are often passed around as string literals, things like `"apiservice"` or `"storage"`.
+
+<!--more-->
+
+But these **magic strings** can lead to headaches: typos, duplication, poor discoverability, and painful refactoring.
 
 Thankfully, there's a clean and safe way to centralize and manage these identifiers using a shared constants class, **removing "secret strings" from your Aspire project.** :boom:
 
