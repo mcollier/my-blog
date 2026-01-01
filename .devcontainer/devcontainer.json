@@ -6,14 +6,16 @@
             "extensions": [
                 "github.vscode-github-actions",
                 "DavidAnson.vscode-markdownlint",
-                "yzhang.markdown-all-in-one"
+                "yzhang.markdown-all-in-one",
+                "tamasfe.even-better-toml"
             ]
         }
     },
     "features": {
         "ghcr.io/devcontainers/features/git": {},
         "ghcr.io/devcontainers/features/hugo": {
-            "version": "0.121.0"
+            "version": "0.151.0",
+            "extended": true
         },
         "ghcr.io/devcontainers/features/go": {}
     },
