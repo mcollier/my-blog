@@ -19,3 +19,5 @@ Ready to join us? [RSVP today!](https://www.meetup.com/central-ohio-azure/events
 And if you want to learn more about the global event, check out [https://globalazure.net](https://globalazure.net)
 
 Looking forward to seeing you there and celebrating another amazing year with the Azure community!
+
+P.S. If you want to connect with other Azure practitioners on a regular basis, join us at the [Azure Columbus meetup](https://www.meetup.com/central-ohio-azure/)!
