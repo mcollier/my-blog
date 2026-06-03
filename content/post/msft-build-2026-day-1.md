@@ -12,7 +12,7 @@ I was fortunate to attend the Microsoft Build conference in person again this ye
 
 <!--more-->
 
-![](/images/msft-build-2026-day-1/build-1.jpg)
+![Microsoft Build 2026](/images/msft-build-2026-day-1/build-1.jpg)
 
 ## The Venue
 
