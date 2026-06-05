@@ -29,6 +29,7 @@ I was able to attend several breakout sessions today.  Thankfully, most were in 
 I attended the following sessions:
 
 - [From CLI to PR: Automating the path to merged code](https://build.microsoft.com/en-US/sessions/BRK203):
+- [Agent Supervision is the new Senior Engineer Skill](https://build.microsoft.com/en-US/sessions/BRK244):
 - [Future of Developer Productivity: Microsoft’s EngThrive Framework in Practice](https://build.microsoft.com/en-US/sessions/BRK210):
 - [Aspire for agents: Transform how you build and deploy distributed apps](https://build.microsoft.com/en-US/sessions/BRK205):
 
