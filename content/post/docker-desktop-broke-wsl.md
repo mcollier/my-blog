@@ -7,7 +7,7 @@ author: "Michael S. Collier"
 tags: [docker, docker-desktop, wsl]
 comments: true
 ---
- 
+
 I try to keep my Docker Desktop (on my personal dev machine) up-to-date.  It updates frequently and I'm generally a fan of keeping my dev software on the latest version.  So when I noticed an available update for Docker Desktop, I didn't hesitate to update.  That was a mistake - 4.75.0 broke my WSL integration.
 
 <!--more-->
@@ -27,7 +27,7 @@ Just fantastic!  I restarted Docker Desktop - same problem.  I rebooted - same p
 
 After questioning some life choices, I finally found the right thread which led me to a solution. A [GitHub issue](https://github.com/docker/for-win/issues/14686#issuecomment-4550664184) pointed me to the [Docker Desktop release notes](https://docs.docker.com/desktop/release-notes/#for-windows-1) which contained a subtle statement under "Bug Fixes and Enhancements":
 
-```text
+``` text
 WSL integration with the default distribution has been disabled. To change this, visit Settings.
 ```
 
