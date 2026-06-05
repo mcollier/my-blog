@@ -12,13 +12,25 @@ Microsoft Build is a two day event this year (after being three days in prior ye
 
 <!--more-->
 
+![Microsoft Build overview](/images/msft-build-2026-day-2/msft-build-high.jpg)
+
 ## No Day 2 Keynote
 
 At a large conference like Microsoft Build, it's hard to keep track of, or at least have awareness of, all the announcements from the various product teams.  Microsoft is conference-driven, and as such many teams target conferences such as Build for their more significant updates and product announcements.  In prior years Build had a day 1 and day 2 keynote, where one of those was focused more on developers and associated product announcements.  I found that helpful as an awareness engine.
 
+![Microsfot Build entrance](/images/msft-build-2026-day-2/msft-build-entrance.jpg)
+
 With no day 2 keynote, it is a bit harder to be aware of all the announcements.  I'll definitely be catching up via the post-Build email blasts from Microsoft, and various product team blogs.
 
 ## Breakout sessions
+
+I was able to attend several breakout sessions today.  Thankfully, most were in real rooms with good A/V, so it was easier to hear today than on day 1.
+
+I attended the following sessions:
+
+- [From CLI to PR: Automating the path to merged code](https://build.microsoft.com/en-US/sessions/BRK203):
+- [Future of Developer Productivity: Microsoft’s EngThrive Framework in Practice](https://build.microsoft.com/en-US/sessions/BRK210):
+- [Aspire for agents: Transform how you build and deploy distributed apps](https://build.microsoft.com/en-US/sessions/BRK205):
 
 ## Hands-On Lab
 
@@ -34,6 +46,10 @@ The lab session started with a brief presentation on the various IQ workloads an
 
 Another great perk of attending Build in person is the conversations you can have with Microsoft product group (PG) members.  They're always eager to hear how customers are using the products and any challenges.  I spent a good amount of time on day 2 talking with various PG members (so much that I missed a breakout session, but I'll catch up via the recording):
 
-- **GitHub**:
-- **Durable Agents & Workflows**:
+- **GitHub**: I spent about nearly an hour talking with two GitHub employees about a few challenges I was having with GitHub (lack of ability to select a GitHub Copilot policy when getting GitHub Copilot from multiple organizations, and problems with the new AI Credit billing model).  I really appreciated their time in listening to my feedback and providing me with references that I can follow-up on.
+- **Durable Agents & Workflows**: I'm a huge fan of Azure Functions, the [Durable Task Scheduler](https://learn.microsoft.com/en-us/azure/durable-task/scheduler/durable-task-scheduler), and the [Durable Agent](https://techcommunity.microsoft.com/blog/appsonazureblog/bulletproof-agents-with-the-durable-task-extension-for-microsoft-agent-framework/4467122) and [Durable Workflow](https://devblogs.microsoft.com/dotnet/durable-workflows-in-microsoft-agent-framework/) extension support for [Microsoft Agent Framework](https://learn.microsoft.com/en-us/agent-framework/).  I had a great conversation with the team to share some early use feedback on Durable Agents and Durable Workflows.  I'm really excited about this stack and the direction it is heading!
 - **Aspire**: I'm a big Aspire fan. However, I recently ran into a problem with the Service Bus emulator integration, specifically running the emulator on Linux ARM64 (using WSL on my Surface Laptop 7 with Snapdragon processor).  I was able to convey my scenario to the Aspire PMs, who were fantastic at understanding the scenario and trying to help me find a solution.  The solution may take a bit of time, but they're aware and working on it.  I appreciate that.
+
+## Conclusion
+
+Overall, I had a great time at Microsoft Build this year. I'm grateful that I was able to attend.  I'm looking forward to sharing more with my colleagues when I return home, and with the broader tech community via user groups, conferences, and this blog!
