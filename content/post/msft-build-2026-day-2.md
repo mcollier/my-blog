@@ -18,7 +18,7 @@ Microsoft Build is a two-day event this year (after being three days in prior ye
 
 At a large conference like Microsoft Build, it's hard to keep track of, or at least have awareness of, all the announcements from the various product teams.  Microsoft is conference-driven, and as such many teams target conferences such as Build for their more significant updates and product announcements.  In prior years Build had a day 1 and day 2 keynote, where one of those was focused more on developers and associated product announcements.  I found that helpful as an awareness engine.
 
-![Microsfot Build entrance](/images/msft-build-2026-day-2/msft-build-entrance.jpg)
+![Microsoft Build entrance](/images/msft-build-2026-day-2/msft-build-entrance.jpg)
 
 With no day 2 keynote, it is a bit harder to be aware of all the announcements.  I'll definitely be catching up via the post-Build email blasts from Microsoft, and various product team blogs.
 
