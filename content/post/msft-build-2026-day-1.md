@@ -2,7 +2,7 @@
 layout: post
 title: "Microsoft Build 2026 - Day 1"
 date: 2026-06-02
-categories:
+categories: ["Microsoft Build"]
 author: "Michael S. Collier"
 tags: [AI, agents, microsoft-build]
 comments: true
