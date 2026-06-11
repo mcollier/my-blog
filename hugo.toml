@@ -17,7 +17,7 @@ disclaimerText = "The opinions expressed herein are my own personal opinions and
 subtitle = "Microsoft Azure and Software Engineering"
 logo = "images/headshot-3000x3000.png"
 favicon = "images/favicon.ico"
-dateFormat = "Mon, Jan 2, 2006"
+dateFormat = ":date_full"
 rss = true
 readingTime = true
 wordCount = true
@@ -59,12 +59,12 @@ weight = 1
 
 [[menu.main]]
 name = "About"
-url = "/page/about"
+url = "/about"
 weight = 2
 
 [[menu.main]]
 name = "Contact"
-url = "/page/contact"
+url = "/contact"
 weight = 3
 
 [[menu.main]]
