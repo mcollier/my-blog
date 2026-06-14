@@ -8,8 +8,6 @@ tags: [azure-functions, durable-task-scheduler, aspire]
 comments: true
 ---
 
-# Using Durable Task Scheduler with Aspire
-
 When you build Azure Functions apps with Aspire, the best experience is usually the one where the AppHost reflects intent instead of infrastructure plumbing.
 
 That matters a lot with Durable Task Scheduler. In a local dev loop, I want an emulator. In Azure, I want the real resource. The recent Aspire integration makes that split much cleaner than the older manual approach.
