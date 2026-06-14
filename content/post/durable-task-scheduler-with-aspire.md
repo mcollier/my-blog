@@ -83,9 +83,18 @@ The pattern is straightforward:
 * `AddDurableTaskScheduler("scheduler")` registers the resource
 * `RunAsEmulator()` is only applied when Aspire is running locally
 * `AddTaskHub("default")` stays attached to the resource, not to a custom branch
-* `DURABLE_TASK_SCHEDULER_CONNECTION_STRING` is still passed into the Functions app, but the backing resource changes based on execution context
+* the Functions project gets a reference to that task hub instead of manual wiring
 
-That provides a local emulator during development and a real Azure resource when published in Azure.
+The Functions project is wired to that scheduler like this:
+
+```csharp
+var func = builder.AddAzureFunctionsProject<Projects.DurableAgent_Functions>("func")
+    .WithHostStorage(storage)
+    .WithReference(dtsTaskHub)
+    .WithExternalHttpEndpoints();
+```
+
+That is the whole connection: the AppHost creates the scheduler and task hub, then hands the task hub to the Functions project through Aspire.
 
 ## Why this is easier
 
