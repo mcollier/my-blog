@@ -12,6 +12,8 @@ When you build Azure Functions apps with Aspire, the best experience is usually 
 
 That matters a lot with Durable Task Scheduler. In a local dev loop, I want an emulator. In Azure, I want the real resource. The recent Aspire integration makes that split much cleaner than the older manual approach.
 
+[Aspire 13.3](https://aspire.dev/whats-new/aspire-13-3/) introduced support for Durable Task Scheduler as part of the Azure Functions integration.
+
 ## The old setup
 
 Before the latest change, `AppHost.cs` had to make a few decisions by hand:
@@ -55,11 +57,9 @@ else
 }
 ```
 
-That works, but it puts a lot of orchestration logic in the AppHost. The more logic that leaks into the host, the more you have to remember when you switch between local development and Azure deployment.
+That works, but it puts a lot of orchestration logic in the AppHost. The more logic that leaks into the host, the more to remember when switching between local development and Azure deployment.
 
 ## The new Aspire integration
-
-This Durable Task Scheduler integration landed in Aspire 13.3.
 
 The current version is much smaller and easier to reason about:
 
@@ -85,23 +85,7 @@ The pattern is straightforward:
 * `AddTaskHub("default")` stays attached to the resource, not to a custom branch
 * `DURABLE_TASK_SCHEDULER_CONNECTION_STRING` is still passed into the Functions app, but the backing resource changes based on execution context
 
-The same idea now applies to Azure Storage too:
-
-```csharp
-var storage = builder.AddAzureStorage("storage");
-if (builder.ExecutionContext.IsRunMode)
-{
-    storage.RunAsEmulator(azurite =>
-    {
-        azurite.WithBlobPort(10000)
-               .WithQueuePort(10001)
-               .WithTablePort(10002)
-               .WithLifetime(ContainerLifetime.Persistent);
-    });
-}
-```
-
-That gives you local emulators during development and real Azure resources when you publish.
+That provides a local emulator during development and a real Azure resource when published in Azure.
 
 ## Why this is easier
 
