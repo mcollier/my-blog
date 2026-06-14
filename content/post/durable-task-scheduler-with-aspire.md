@@ -148,7 +148,7 @@ That separation is the real win:
 
 ## My takeaway
 
-If you are already using Aspire with Azure Functions, the new Durable Task Scheduler integration is the way to go.  It is:
+If you are already using Aspire with Azure Functions, the new Durable Task Scheduler integration is the way to go. It is:
 
 * cleaner
 * easier to scan
