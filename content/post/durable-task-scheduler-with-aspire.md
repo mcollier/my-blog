@@ -12,7 +12,7 @@ When you build Azure Functions apps with Aspire, the best experience is usually 
 
 That matters a lot with Durable Task Scheduler. In a local dev loop, I want an emulator. In Azure, I want the real resource. The recent Aspire integration makes that split much cleaner than the older manual approach.
 
-[Aspire 13.3](https://aspire.dev/whats-new/aspire-13-3/) introduced support for Durable Task Scheduler as part of the Azure Functions integration.
+[Aspire 13.3](https://aspire.dev/whats-new/aspire-13-3/#durable-task-scheduler-for-azure-functions) introduced support for Durable Task Scheduler as part of the Azure Functions integration.
 
 ## The old setup
 
