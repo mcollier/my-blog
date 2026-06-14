@@ -96,6 +96,16 @@ var func = builder.AddAzureFunctionsProject<Projects.DurableAgent_Functions>("fu
 
 That is the whole connection: the AppHost creates the scheduler and task hub, then hands the task hub to the Functions project through Aspire.
 
+![Durable Task Scheduler orchestration](/images/durable-task-scheduler-with-aspire/dts-orchestration.png)
+
+When Aspire runs locally (e.g., via `aspire run` command), I can see the multiple endpoints for Durable Task Scheduler:
+
+![Aspire run command output](/images/durable-task-scheduler-with-aspire/aspire-run-output.png)
+
+DTS provides endpoints for the dashboard, a GRPC and HTTP endpoint:
+
+![Three Aspire DTS endpoints](images/durable-task-scheduler-with-aspire/aspire-dts-endpoints.png)
+
 ## Why this is easier
 
 The new integration is easier to use for three reasons.
