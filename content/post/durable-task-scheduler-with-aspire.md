@@ -104,7 +104,7 @@ When Aspire runs locally (e.g., via `aspire run` command), I can see the multipl
 
 DTS provides endpoints for the dashboard, a GRPC and HTTP endpoint:
 
-![Three Aspire DTS endpoints](images/durable-task-scheduler-with-aspire/aspire-dts-endpoints.png)
+![Three Aspire DTS endpoints](/images/durable-task-scheduler-with-aspire/aspire-dts-endpoints.png)
 
 ## Why this is easier
 
