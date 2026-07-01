@@ -17,7 +17,9 @@
             "version": "0.148.2",
             "extended": true
         },
-        "ghcr.io/devcontainers/features/go": {}
+        "ghcr.io/devcontainers/features/go": {},
+        "ghcr.io/devcontainers/features/copilot-cli:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
     },
     "forwardPorts": []
 }
