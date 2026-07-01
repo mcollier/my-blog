@@ -1,0 +1,56 @@
+{{- $title := .Get "title" | default "Event" -}}
+{{- $location := .Get "location" | default "TBD" -}}
+{{- $date := .Get "date" | default "TBD" -}}
+{{- $registrationText := .Get "registrationText" | default "Registration details coming soon" -}}
+{{- $registrationUrl := .Get "registrationUrl" -}}
+{{- $relatedBlogText := .Get "relatedBlogText" | default "Read related blog" -}}
+{{- $relatedBlogUrl := .Get "relatedBlogUrl" -}}
+{{- $status := lower (.Get "status" | default "upcoming") -}}
+{{- $roleRaw := lower (.Get "role" | default "attending") -}}
+{{- $roleLabel := "Attending" -}}
+{{- $roleClass := "event-role-attending" -}}
+{{- if eq $roleRaw "speaking" -}}
+{{- $roleLabel = "Speaking" -}}
+{{- $roleClass = "event-role-speaking" -}}
+{{- else if eq $roleRaw "organizing" -}}
+{{- $roleLabel = "Organizing" -}}
+{{- $roleClass = "event-role-organizing" -}}
+{{- end -}}
+<article class="event-card{{ if eq $status " past" }} event-card-past{{ end }}">
+    <div class="event-card-header">
+        <h3 class="event-card-title">{{ $title }}</h3>
+        <span class="event-role {{ $roleClass }}">{{ $roleLabel }}</span>
+    </div>
+
+    <dl class="event-card-meta">
+        <div>
+            <dt>Location</dt>
+            <dd>{{ $location }}</dd>
+        </div>
+        <div>
+            <dt>Date</dt>
+            <dd>{{ $date }}</dd>
+        </div>
+    </dl>
+
+    <p class="event-card-registration">
+        <strong>Registration:&nbsp;</strong>
+        {{- if $registrationUrl -}}
+        <a href="{{ $registrationUrl }}">{{ $registrationText }}</a>
+        {{- else -}}
+        {{ $registrationText }}
+        {{- end -}}
+    </p>
+
+    {{- if $relatedBlogUrl -}}
+    <p class="event-card-related-blog">
+        <strong>Related Blog:&nbsp;</strong> <a href="{{ $relatedBlogUrl }}">{{ $relatedBlogText }}</a>
+    </p>
+    {{- end -}}
+
+    {{- with .Inner -}}
+    <div class="event-card-notes">
+        <strong>Notes:&nbsp;</strong> {{ . | markdownify }}
+    </div>
+    {{- end -}}
+</article>

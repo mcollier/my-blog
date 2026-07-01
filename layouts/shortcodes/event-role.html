@@ -1,0 +1,12 @@
+{{- $raw := .Get 0 | default "attending" -}}
+{{- $role := lower $raw -}}
+{{- $label := "Attending" -}}
+{{- $class := "event-role-attending" -}}
+{{- if eq $role "speaking" -}}
+{{- $label = "Speaking" -}}
+{{- $class = "event-role-speaking" -}}
+{{- else if eq $role "organizing" -}}
+{{- $label = "Organizing" -}}
+{{- $class = "event-role-organizing" -}}
+{{- end -}}
+<span class="event-role {{ $class }}">{{ $label }}</span>
