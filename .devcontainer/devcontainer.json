@@ -14,7 +14,7 @@
     "features": {
         "ghcr.io/devcontainers/features/git": {},
         "ghcr.io/devcontainers/features/hugo": {
-            "version": "0.148.2",
+            "version": "0.154.3",
             "extended": true
         },
         "ghcr.io/devcontainers/features/go": {}
