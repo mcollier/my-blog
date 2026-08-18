@@ -36,7 +36,7 @@ The session focuses on a question that becomes important as AI applications grow
 
 ## Sessions and Themes
 
-After my session, I had the rest of the day to attend several other sessions. One of the great things about Beer City Code is the number of interesting sessions available. That abundance is both a blessing and a curse: there were far more sessions I wanted to attend than time allowed.
+After my session, I had the rest of the day to attend several others. One of the great things about Beer City Code is the number of interesting sessions available. There were far more sessions I wanted to attend than time allowed.
 
 The sessions I attended shared a common theme: how to make AI-assisted software engineering practical and how to operate AI-enabled solutions in production.
 
