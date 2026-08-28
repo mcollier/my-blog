@@ -7,17 +7,23 @@
                 "github.vscode-github-actions",
                 "DavidAnson.vscode-markdownlint",
                 "yzhang.markdown-all-in-one",
-                "tamasfe.even-better-toml"
+                "tamasfe.even-better-toml",
+                "streetsidesoftware.code-spell-checker"
             ]
         }
     },
     "features": {
-        "ghcr.io/devcontainers/features/git": {},
+        "ghcr.io/devcontainers/features/git:1": {},
         "ghcr.io/devcontainers/features/hugo": {
             "version": "0.148.2",
             "extended": true
         },
-        "ghcr.io/devcontainers/features/go": {}
+        "ghcr.io/devcontainers/features/go": {},
+        "ghcr.io/devcontainers/features/node": {
+            "version": "lts"
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/copilot-cli:1": {}
     },
     "forwardPorts": []
 }
