@@ -16,7 +16,7 @@ I do most of my personal and professional work in WSL2 using dev containers. Tha
 
 ## Enabling WSL Support
 
-Starting in v1.1.4, the GitHub Copilot App includes an experimental "WSL hosts (Preview)" feature for connecting to and creating sessions inside WSL. Your first step is to enable that feature in the app's **Experimental** settings. After that, restart the app.
+Starting in v1.1.14, the GitHub Copilot App includes an experimental "WSL hosts (Preview)" feature for connecting to and creating sessions inside WSL. Your first step is to enable that feature in the app's **Experimental** settings. After that, restart the app.
 
 ![Enable WSL host preview in GitHub Copilot experimental settings](/images/github-copilot-app-wsl/wsl-experimental-enable-wsl-host.png)
 
@@ -46,4 +46,4 @@ I had a few projects that I had previously cloned in Windows. I know, that viola
 
 ## Summary
 
-I use the GitHub Copilot App more often now. The lack of WSL-hosted project support was holding me back. Starting in GitHub Copilot App v1.1.4, a new experimental preview feature enables support for WSL-hosted projects. Despite a couple of bugs, the feature seems to be working well. I'm looking forward to continuing to use this new functionality in the GitHub Copilot App.
+I use the GitHub Copilot App more often now. The lack of WSL-hosted project support was holding me back. Starting in GitHub Copilot App v1.1.14, a new experimental preview feature enables support for WSL-hosted projects. Despite a couple of bugs, the feature seems to be working well. I'm looking forward to continuing to use this new functionality in the GitHub Copilot App.
