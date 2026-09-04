@@ -1,0 +1,44 @@
+---
+layout: post
+title: "Microsoft MVP Award 2026"
+date: 2026-09-03
+categories: ["Microsoft MVP"]
+author: "Michael S. Collier"
+tags: [MVP, community]
+comments: true
+---
+ 
+I'm excited to share that I've been accepted to the Microsoft MVP program!  My award category is **Azure Application PaaS**.  I was one of the first Azure MVPs nearly 16 years ago (awarded in October 2010). I "retired" from the MVP program in January 2015 when I joined Microsoft as an employee. While I no longer work at Microsoft, I remain an avid user and proponent of many Microsoft developer technologies. I'm thrilled to once again join the MVP program and this amazing community.
+
+<!--more-->
+
+## Community
+
+I love being part part of the Microsoft tech community. Whether it is leading and attending local user groups, speaking at or attending regional and national conferences, blogging, or interacting with folks on social media, being part of the community is an incredibly rewarding experience. I love sharing what I've learned and helping others to be successful in their journeys. I've found there no better way to learn at technology than to try to teach others.
+
+I also learn so much from others in the community. The exchange of ideas, perspectives and lessons learned helps to strengthen my own efforts. Having that network is incredibly valuable.  When I am unsure about a topic or idea, being able to "phone a friend" makes a huge impact.
+
+## MVP
+
+Community connection is what makes the Microsoft MVP program so important and valuable to me. Sure, the perks are great, but it is the _community_ that is even more valuable.
+
+As I stated at the begining, I first joined the MVP program in 2010.  During that time I met several MVPs with whom I've stayed in close contact with over the years.  Many of which remain close personal friends to this day. I'm incredibly grateful to them and the MVP program for fostering those connections.
+
+![Azure MVP award discs]()
+
+After leaving Microsoft in early 2025, I set a goal to get back to the MVP program. I had such fond memories of the MVP program, that I wanted to be part of that group again.  That community. 
+
+> Microsoft employees aren't eligible for the Microsoft MVP program.
+
+I knew it wouldn't be easy.  I got back into local user groups, including leading my [local Azure user group, Azure Columbus](https://www.meetup.com/central-ohio-azure/). I helped organize several local events too.  I also picked up the pace of speaking at local and regional user groups. While I've had this blog for a while, my posting frequency dropped.  So, I started posting more, sharing what I've been working on and learning along the way.  _(I do need to post yet even more; I enjoy the writing process.)_
+
+The hardest part for me was the time.  The first time around (2010-2015), my oldest son was about a year old when I "retired" in 2015. I had a lot of free time.  Now, I have two school-aged sons who keep me very busy.  But, it's a balancing act - juggling work, family, and the tech community.  Yes, I'm busy, but I love it. :heart:
+
+## I'm back
+
+On the evening of August 31st, 2026, I recieved the email that I'd been anxiously awaiting - "".
+
+![MVP Award email screenshot](/images/microsoft-mvp-2026/mvp-award-email-2026-538x398.png)
+
+I'm incredibly honored to once again be a Microsoft MVP. This wasn't a solo effort. There have been many friends and colleagues who've helped, providing feedback and guidance along the way. They're part of my community and I'm so thankful for each and every one of them.  Thank you!
+
