@@ -22,11 +22,11 @@ I also learn so much from others in the community. The exchange of ideas, perspe
 
 Community connection is what makes the Microsoft MVP program so important and valuable to me. Sure, the perks are great, but it is the _community_ that is even more valuable.
 
-As I stated at the begining, I first joined the MVP program in 2010.  During that time I met several MVPs with whom I've stayed in close contact with over the years.  Many of which remain close personal friends to this day. I'm incredibly grateful to them and the MVP program for fostering those connections.
+As I stated at the beginning, I first joined the MVP program in 2010.  During that time I met several MVPs with whom I've stayed in close contact with over the years.  Many of which remain close personal friends to this day. I'm incredibly grateful to them and the MVP program for fostering those connections.
 
 ![Azure MVP award discs]()
 
-After leaving Microsoft in early 2025, I set a goal to get back to the MVP program. I had such fond memories of the MVP program, that I wanted to be part of that group again.  That community. 
+After leaving Microsoft in early 2025, I set a goal to get back to the MVP program. I had such fond memories of the MVP program, that I wanted to be part of that group again.  That community.
 
 > Microsoft employees aren't eligible for the Microsoft MVP program.
 
@@ -36,7 +36,7 @@ The hardest part for me was the time.  The first time around (2010-2015), my old
 
 ## I'm back
 
-On the evening of August 31st, 2026, I recieved the email that I'd been anxiously awaiting - "".
+On the evening of August 31st, 2026, I received the email that I'd been anxiously awaiting - "".
 
 ![MVP Award email screenshot](/images/microsoft-mvp-2026/mvp-award-email-2026-538x398.png)
 
