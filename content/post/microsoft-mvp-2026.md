@@ -24,7 +24,7 @@ Community connection is what makes the Microsoft MVP program so important and va
 
 As I stated at the beginning, I first joined the MVP program in 2010.  During that time I met several MVPs with whom I've stayed in close contact with over the years.  Many of which remain close personal friends to this day. I'm incredibly grateful to them and the MVP program for fostering those connections.
 
-![Azure MVP award discs]()
+![Azure MVP award discs](/images/microsoft-mvp-2026/mvp-award-trophy2-489x785.png)
 
 After leaving Microsoft in early 2025, I set a goal to get back to the MVP program. I had such fond memories of the MVP program, that I wanted to be part of that group again.  That community.
 
