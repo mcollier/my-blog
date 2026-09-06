@@ -14,7 +14,7 @@ I'm excited to share that I've been accepted to the Microsoft MVP program!  My a
 
 ## Community
 
-I love being part part of the Microsoft tech community. Whether it is leading and attending local user groups, speaking at or attending regional and national conferences, blogging, or interacting with folks on social media, being part of the community is an incredibly rewarding experience. I love sharing what I've learned and helping others to be successful in their journeys. I've found there no better way to learn at technology than to try to teach others.
+I love being part part of the Microsoft tech community. Whether I'm leading a local user group, speaking at a regional conference, blogging, or just talking with folks on social media, it's an incredibly rewarding experience. I love sharing what I've learned and helping others to be successful in their journeys. I've found there's no better way to learn a technology than to try to teach others.
 
 I also learn so much from others in the community. The exchange of ideas, perspectives and lessons learned helps to strengthen my own efforts. Having that network is incredibly valuable.  When I am unsure about a topic or idea, being able to "phone a friend" makes a huge impact.
 
@@ -22,7 +22,7 @@ I also learn so much from others in the community. The exchange of ideas, perspe
 
 Community connection is what makes the Microsoft MVP program so important and valuable to me. Sure, the perks are great, but it is the _community_ that is even more valuable.
 
-As I stated at the beginning, I first joined the MVP program in 2010.  During that time I met several MVPs with whom I've stayed in close contact with over the years.  Many of which remain close personal friends to this day. I'm incredibly grateful to them and the MVP program for fostering those connections.
+As I stated at the beginning, I first joined the MVP program in 2010.  During that time I met several MVPs I've stayed in close contact with over the years. Many of them remain close personal friends to this day. I'm incredibly grateful to them and the MVP program for fostering those connections.
 
 ![Azure MVP award discs](/images/microsoft-mvp-2026/mvp-award-trophy2-489x785.png)
 
@@ -36,9 +36,8 @@ The hardest part for me was the time.  The first time around (2010-2015), my old
 
 ## I'm back
 
-On the evening of August 31st, 2026, I received the email that I'd been anxiously awaiting - "".
+On the evening of August 31st, 2026, I received the email that I'd been anxiously awaiting:
 
 ![MVP Award email screenshot](/images/microsoft-mvp-2026/mvp-award-email-2026-538x398.png)
 
 I'm incredibly honored to once again be a Microsoft MVP. This wasn't a solo effort. There have been many friends and colleagues who've helped, providing feedback and guidance along the way. They're part of my community and I'm so thankful for each and every one of them.  Thank you!
-
