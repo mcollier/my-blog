@@ -8,21 +8,21 @@ tags: [MVP, community]
 comments: true
 ---
  
-I'm excited to share that I've been accepted to the Microsoft MVP program!  My award category is **Azure Application PaaS**.  I was one of the first Azure MVPs nearly 16 years ago (awarded in October 2010). I "retired" from the MVP program in January 2015 when I joined Microsoft as an employee. While I no longer work at Microsoft, I remain an avid user and proponent of many Microsoft developer technologies. I'm thrilled to once again join the MVP program and this amazing community.
+I'm excited to share that I've been accepted to the Microsoft MVP program!  My award category is **Azure Application PaaS**.  I was in the inaugural Azure MVP group nearly 16 years ago (awarded in October 2010). I "retired" from the MVP program in January 2015 when I joined Microsoft as an employee. While I no longer work at Microsoft, I remain an avid user and proponent of many Microsoft developer technologies. I'm thrilled to once again join the MVP program and this amazing community.
 
 <!--more-->
 
 ## Community
 
-I love being part part of the Microsoft tech community. Whether I'm leading a local user group, speaking at a regional conference, blogging, or just talking with folks on social media, it's an incredibly rewarding experience. I love sharing what I've learned and helping others to be successful in their journeys. I've found there's no better way to learn a technology than to try to teach others.
+I love being part of the Microsoft tech community. Whether I'm leading a local user group, speaking at conferences, blogging, or just engaging with folks on social media, it's an incredibly rewarding experience. I love sharing what I've learned and helping others to be successful in their journeys. I've found there's no better way to learn a technology than to try to teach others.
 
-I also learn so much from others in the community. The exchange of ideas, perspectives and lessons learned helps to strengthen my own efforts. Having that network is incredibly valuable.  When I am unsure about a topic or idea, being able to "phone a friend" makes a huge impact.
+I also learn so much from others in the community. The exchange of ideas, perspectives and lessons learned helps to strengthen my own efforts. Having that network is incredibly valuable.
 
 ## MVP
 
 Community connection is what makes the Microsoft MVP program so important and valuable to me. Sure, the perks are great, but it is the _community_ that is even more valuable.
 
-As I stated at the beginning, I first joined the MVP program in 2010.  During that time I met several MVPs I've stayed in close contact with over the years. Many of them remain close personal friends to this day. I'm incredibly grateful to them and the MVP program for fostering those connections.
+When I first joined the program in 2010, I met several MVPs who became lifelong friends.  I'm incredibly grateful to them and the MVP program for fostering those connections.
 
 ![Azure MVP award discs](/images/microsoft-mvp-2026/mvp-award-trophy2-489x785.png)
 
