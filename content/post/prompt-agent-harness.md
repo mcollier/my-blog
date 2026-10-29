@@ -2,6 +2,7 @@
 title: "Prompt Agent Harness"
 date: 2026-10-28
 author: "Michael S. Collier"
+categories: ["Microsoft Foundry"]
 tags: [foundry, agents]
 ---
 
