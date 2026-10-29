@@ -8,7 +8,7 @@ tags: [foundry, agents]
 
 Today Microsoft unveiled the [Microsoft Copilot harness in Foundry Agent Service](https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/). With the new harness (built on what was [previously known as the GitHub Copilot SDK](https://blogs.microsoft.com/blog/2026/10/28/introducing-the-microsoft-copilot-harness-unlocking-the-potential-of-truly-multi-model-agentic-work/)), Microsoft Foundry prompt agents can read and write files in the agent workspace, perform web searches, run shell commands in a sandboxed session, spawn subagents, and add standard agent skills (via a SKILL.md or the [Foundry Skills Catalog](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/private-skill-catalog)).
 
-<!-- more -->
+<!--more-->
 
 ## Why a Harness Matters
 
