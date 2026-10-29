@@ -1,5 +1,5 @@
 ---
-title: "Prompt Agent Harness"
+title: "Microsoft Copilot harness in Foundry"
 date: 2026-10-28
 author: "Michael S. Collier"
 categories: ["Microsoft Foundry"]
