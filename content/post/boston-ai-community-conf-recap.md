@@ -12,7 +12,7 @@ I spent Friday, November 13th, at the [AI Community Conference Boston 2026](http
 
 I had the opportunity to deliver two sessions, catch up with some familiar faces, and have several great conversations with the speakers and attendees.
 
-<!-- more -->
+<!--more-->
 
 ## My Sessions
 
